@@ -1,0 +1,9 @@
+Options All -Indexes
+Options +FollowSymLinks
+AddDefaultCharset utf-8
+RewriteEngine On
+
+
+
+
+
