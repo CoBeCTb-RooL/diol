@@ -37,7 +37,7 @@ class AdminGroupController extends MainController{
 	
 		$CORE->setLayout(null);
 		
-		if($ADMIN->hasRole(Role::ADMIN_GROUPS_MODERATOR) )
+		if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::ADMIN_GROUPS_MODERATOR) )
 		{
 			$MODEL = AdminGroup::getList($status = null, $statusesNotIn = array(Status::code(Status::DELETED)));
 		}
@@ -54,8 +54,8 @@ class AdminGroupController extends MainController{
 		Startup::execute(Startup::ADMIN);
 	
 		$CORE->setLayout(null);
-	
-		if($ADMIN->hasRole(Role::ADMIN_GROUPS_MODERATOR) )
+
+		if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::ADMIN_GROUPS_MODERATOR) )
 		{
 			if($_REQUEST['id'])
 			{
@@ -76,8 +76,8 @@ class AdminGroupController extends MainController{
 		Startup::execute(Startup::ADMIN);
 	
 		$CORE->setLayout(null);
-	
-		if($ADMIN->hasRole(Role::ADMIN_GROUPS_MODERATOR) )
+
+		if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::ADMIN_GROUPS_MODERATOR) )
 		{
 			//vd($_REQUEST);
 			$roles = $_REQUEST['role'];
@@ -140,7 +140,7 @@ class AdminGroupController extends MainController{
 	
 		$errors = null;
 		//vd($_REQUEST);
-		if($ADMIN->hasRole(Role::ADMIN_GROUPS_MODERATOR) )
+		if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::ADMIN_GROUPS_MODERATOR) )
 		{
 			$item = AdminGroup::get($_REQUEST['id']);
 			if($item)
@@ -186,8 +186,8 @@ class AdminGroupController extends MainController{
 	
 		$errors = null;
 		//vd($_REQUEST);
-	
-		if($ADMIN->hasRole(Role::ADMIN_GROUPS_MODERATOR) )
+
+		if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::ADMIN_GROUPS_MODERATOR) )
 		{
 			if($item = AdminGroup::get($_REQUEST['id']))
 			{

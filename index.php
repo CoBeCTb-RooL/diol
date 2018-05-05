@@ -54,7 +54,11 @@ if($route = Route::getSuitableRoute($url))
 $CORE = new Core($url);
 
 # 	ГЛОБАЛЬНАЯ ЗАГЛУШКА
-if($_CONFIG['ZAGLUSHKA'] && !$CORE->isAdminka){require(ROOT.'/'.VIEWS_DIR.'/'.LAYOUTS_DIR.'/zaglushka.php'); die; }
+if($_CONFIG['ZAGLUSHKA'] && !$CORE->isAdminka)
+{
+
+	require(ROOT.'/'.VIEWS_DIR.'/'.LAYOUTS_DIR.'/zaglushka.php'); die;
+}
 //vd($_CONFIG);
 
 $CORE->route = $route;

@@ -6,10 +6,6 @@ $essence = $MODEL['essence'];
 
 
 
-
-
-
-
 <?php
 if($essence)
 {?>

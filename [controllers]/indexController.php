@@ -7,7 +7,11 @@ class IndexController extends MainController{
 
 		$action = 'index';
 		if($_SERVER['REQUEST_URI'] == '/' && $_CONFIG['ZAGLUSHKA_INDEX'])
+		{
+			header('Location: /admin');
+			die;
 			$action = 'zaglushka';
+		}
 		
 		$CORE->action = $action;
 	}

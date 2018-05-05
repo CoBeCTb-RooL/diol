@@ -26,6 +26,8 @@ class Startup{
 	########################
 	function frontend()
 	{
+		header('Location: /admin');
+		die;
 		//global $CORE, $_GLOBALS, $_CONFIG, $_PARAMS, $_CONST;
 		require(GLOBAL_VARS_SCRIPT_FILE_PATH);
 		

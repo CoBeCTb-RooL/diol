@@ -21,7 +21,7 @@ class EssenceController extends MainController{
 	{
 		require(GLOBAL_VARS_SCRIPT_FILE_PATH);
 		Startup::execute(Startup::ADMIN);
-		
+
 		Core::renderView('essences/indexView.php', $model);
 	}
 	
@@ -34,7 +34,7 @@ class EssenceController extends MainController{
 		Startup::execute(Startup::ADMIN);
 		$CORE->setLayout(null);
 		
-		
+
 		if($ADMIN->hasRole(Role::SUPER_ADMIN) )
 		{
 			$MODEL['list'] = Essence2::getList();

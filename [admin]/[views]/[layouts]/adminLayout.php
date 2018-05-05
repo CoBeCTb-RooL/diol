@@ -19,6 +19,8 @@
 	
 	<script src="/<?=ADMIN_DIR?>/js/slonne.js" type="text/javascript"></script>
 	<script src="/<?=ADMIN_DIR?>/js/slonne.entities.js" type="text/javascript"></script>
+    <script src="/<?=ADMIN_DIR?>/js/slonne.fields.js" type="text/javascript"></script>
+
 	<!--
 	<script src="/<?=ADMIN_DIR?>/js/slonne.modules.js" type="text/javascript"></script>
 	<script src="/<?=ADMIN_DIR?>/js/slonne.admins.js" type="text/javascript"></script>

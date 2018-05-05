@@ -12,9 +12,9 @@ else
 	define('DB_USER', 		'v_21838_ost_db_u');
 	define('DB_PASSWORD', 	'7pGeXgwnqHcXzGZNAYFrLQmK');
 	define('DB_HOST', 		'localhost');*/
-    define('DB_NAME', 		'p-7351_ostat11ki');
-    define('DB_USER', 		'ost_u111ser');
-    define('DB_PASSWORD', 	'Olxf596?Ftv111h68#5');
+    define('DB_NAME', 		'p-735sd1_osdstat11ki');
+    define('DB_USER', 		'ost_u111ssder');
+    define('DB_PASSWORD', 	'Olxf596sd?Ftv111h68#5');
     define('DB_HOST', 		'localhost');
 
 }
