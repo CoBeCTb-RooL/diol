@@ -1,5 +1,5 @@
 <?php
-class CategoriesController extends MainController{
+class ClientsController extends MainController{
 	
 	function routifyAction()
 	{
@@ -21,8 +21,8 @@ class CategoriesController extends MainController{
 	{
 		require(GLOBAL_VARS_SCRIPT_FILE_PATH);
 		Startup::execute(Startup::ADMIN);
-	
-		Core::renderView('categories/indexView.php', $model);
+
+		Core::renderView('clients/indexView.php', $model);
 	}
 	
 	
@@ -34,30 +34,21 @@ class CategoriesController extends MainController{
 		
 		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
 		{
-			$MODEL['cat'] = Client::get($_REQUEST['catId']);
-				
-			if($MODEL['cat'])
-			{
-				$MODEL['cat']->initClass();
-				$MODEL['cat']->getElderCats();
-				$MODEL['cat']->initProductVolumeUnits();
-			}
-				
-			$MODEL['list'] = Client::getList(intval($_REQUEST['catId']));
-			foreach($MODEL['list'] as $cat)
-			{
-				$cat->initClass();
-				$cat->subCatsCount = Client::getCount($cat->id);
-				$cat->advsCount = AdvItem::getCount($cat->id);
-				$cat->advsCountByStatus = AdvItem::getCountGroupByStatus($cat->id);
-				$cat->initProductVolumeUnits();
-			}
+			//vd($_REQUEST);
+			$MODEL['p'] = $_REQUEST['p'] ? $_REQUEST['p'] : 1;
+			$MODEL['elPP'] = $_REQUEST['elPP'] ? $_REQUEST['elPP'] : 10;
+
+			$params =[];
+			$MODEL['totalCount'] = Client::getCount($params);
+
+			$params['from'] = ($MODEL['p']-1) * $MODEL['elPP'];
+			$params['count'] = $MODEL['elPP'];
+			$MODEL['list'] = Client::getList($params);
 		}
 		else
 			$MODEL['error'] = Error::NO_ACCESS_ERROR;
-			//vd($MODEL);
-	
-		Core::renderView('categories/list.php', $MODEL);
+
+		Core::renderView('clients/list.php', $MODEL);
 	}
 	
 	
@@ -72,7 +63,7 @@ class CategoriesController extends MainController{
 	
 		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
 		{
-			$cat = Client::get($_REQUEST['catId']);
+			$cat = Client::get($_REQUEST['id']);
 			if($cat)
 			{
 				$statusToBe = $cat->status->code == Status::ACTIVE ? Status::code(Status::INACTIVE) : Status::code(Status::ACTIVE);
@@ -82,7 +73,7 @@ class CategoriesController extends MainController{
 				$cat->update();
 			}
 			else
-				$errors[] = new Error('Ошибка! Не найдена категория '.$_REQUEST['catId'].'');
+				$errors[] = new Error('Ошибка! Не найдена категория '.$_REQUEST['id'].'');
 		}
 		else
 			$errors[] = new Error(Error::NO_ACCESS_ERROR);
@@ -102,24 +93,14 @@ class CategoriesController extends MainController{
 	
 		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR))
 		{
-			$MODEL['cat'] = Client::get($_REQUEST['catId']);
-			if($MODEL['cat'])
-			{
-				$MODEL['cat']->initClass();
-				if($MODEL['cat']->class)
-					$MODEL['cat']->class->initProps(Status::code(Status::ACTIVE));
-			}
-				
-			$MODEL['classes'] = AdvClass::getList($status=null);
-			foreach($MODEL['classes'] as $class)
-				$class->initProps(Status::code(Status::ACTIVE));
-					
-				$MODEL['currentCatId'] = $_REQUEST['currentCat'];
+			$MODEL['item'] = Client::get($_REQUEST['id']);
+			if($MODEL['item'])
+				$MODEL['item']->initMedia();
 		}
 		else
 			$MODEL['error'] = Error::NO_ACCESS_ERROR;
 	
-			Core::renderView('categories/edit.php', $MODEL);
+		Core::renderView('clients/edit.php', $MODEL);
 	}
 	
 	
@@ -134,32 +115,66 @@ class CategoriesController extends MainController{
 		$errors = null;
 		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
 		{
-			if($_REQUEST['catId'] = intval($_REQUEST['catId']))
+			if($_REQUEST['clientId'] = intval($_REQUEST['clientId']))
 			{
-				$cat = Client::get($_REQUEST['catId']);
+				$cat = Client::get($_REQUEST['clientId']);
 				if(!$cat)
-					$errors[] = Slonne::setError('', 'Ошибка! Категория не найдена '.$_REQUEST['catId'].'');
+					$errors[] = Slonne::setError('', 'Ошибка! Категория не найдена '.$_REQUEST['clientId'].'');
 			}
 			else
 				$cat = new Client();
 					
 				if(!count($errors))
 				{
-					$cat->name = strPrepare($_REQUEST['name']);
-					$cat->pid = $_REQUEST['pid'];
-					$cat->status = $_REQUEST['active'] ? Status::code(Status::ACTIVE) : Status::code(Status::INACTIVE);
-					$cat->classId = intval($_REQUEST['classId']);
-	
+					$cat->setData($_REQUEST);
+//					vd($cat);
 					$errors = $cat->validate();
 					if(!count($errors))
 					{
 						if($cat->id)
 							$cat->update();
-							else
+						else
+							$cat->id = $cat->insert();
+
+						# 	обрабатываем медию
+						//vd($cat);
+						Slonne::fixFILES();
+						//vd($_FILES);
+						if(count($_FILES['media']))
+							foreach ($_FILES['media'] as $media)
 							{
-								$cat->idx = Client::getNextIdx($cat->pid);
-								$cat->id = $cat->insert();
+								$destDir = ROOT.'/'.UPLOAD_IMAGES_REL_DIR.'clients/';
+								$newFileName = Funx::generateName();
+								$destDir .= Funx::getSubdirsByFile($newFileName);
+								//vd($destDir);
+								//echo '<hr />';
+								$saveFileResult = Media2::savePic($media, $destDir, $newFileName);
+								if(!$saveFileResult['problem'])
+								{
+									$path = 'clients/'.Funx::getSubdirsByFile($newFileName).'/'.$saveFileResult['newFileName'];
+									$m = new Media2();
+									$m->objId = $cat->id;
+									$m->objType = Object::CLIENT;
+									$m->status = Status::code(Status::ACTIVE);
+									$m->path = $path;
+									$m->idx = 9999;
+
+									$m->insert();
+								}
+								else
+									$warnings[] = $saveFileResult['problem'];
 							}
+					}
+
+					//vd($_REQUEST);
+					foreach ($_REQUEST['media'] as $mediaId=>$text)
+					{
+						//vd($mediaId);
+						//vd($text);
+						$m = Media2::get($mediaId);
+						$m->title = trim(strPrepare($text));
+						$m->update();
+						//vd($m);
 					}
 				}
 		}
@@ -182,10 +197,10 @@ class CategoriesController extends MainController{
 		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
 		{
 			//usleep(800000);
-			foreach($_REQUEST['idx'] as $catId=>$val)
+			foreach($_REQUEST['idx'] as $clientId=>$val)
 			{
 				if($val = intval($val))
-					Client::setIdx($catId, $val);
+					Client::setIdx($clientId, $val);
 			}
 		}
 		else
@@ -213,7 +228,7 @@ class CategoriesController extends MainController{
 		else
 			$MODEL['error'] = Error::NO_ACCESS_ERROR;
 	
-		Core::renderView('categories/unitsList.php', $MODEL);
+		Core::renderView('clients/unitsList.php', $MODEL);
 	}
 	
 	
@@ -228,7 +243,7 @@ class CategoriesController extends MainController{
 		
 		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
 		{
-			$cat = Client::get($_REQUEST['catId']);
+			$cat = Client::get($_REQUEST['clientId']);
 			if($cat)
 			{
 				$unit = ProductVolumeUnit::get($_REQUEST['unitId']);
@@ -241,7 +256,7 @@ class CategoriesController extends MainController{
 						if(!$catUnitCmb)
 						{
 							$catUnitCmb = new CatProductVolumeUnitCmb();
-							$catUnitCmb->catId = $cat->id;
+							$catUnitCmb->clientId = $cat->id;
 							$catUnitCmb->unitId = $unit->id;
 							$catUnitCmb->insert();
 							
@@ -292,6 +307,37 @@ class CategoriesController extends MainController{
 		$json['errors'] = $errors;
 		$json['checked'] = $checked;
 		
+		echo json_encode($json);
+	}
+
+
+
+
+
+
+	function deleteMedia()
+	{
+		require(GLOBAL_VARS_SCRIPT_FILE_PATH);
+		Startup::execute(Startup::ADMIN);
+		$CORE->setLayout(null);
+
+		$errors = null;
+
+		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
+		{
+			$media = Media2::get($_REQUEST['id']);
+			if($media)
+			{
+				$media->delete();
+			}
+			else
+				$errors[] = new Error('ОШИБКА! Медиа не найдено.');
+		}
+		else
+			$errors[] = new Error(Error::NO_ACCESS_ERROR);
+
+		$json['errors'] = $errors;
+
 		echo json_encode($json);
 	}
 	

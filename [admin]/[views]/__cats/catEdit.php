@@ -38,7 +38,7 @@ $currentCatId = $_REQUEST['currentCat'];
 		<span class="value">
 			<select name="pid">
 				<option value="0">-КОРЕНЬ-</option>
-				<?=AdvCat::drawTreeSelect(0, $self_id=$cat->id,  $idToBeSelected=$cat->pid ? $cat->pid : $currentCatId, $level=0)?>
+				<?=Client::drawTreeSelect(0, $self_id=$cat->id,  $idToBeSelected=$cat->pid ? $cat->pid : $currentCatId, $level=0)?>
 			</select>
 		</span>
 		<div class="clear"></div>

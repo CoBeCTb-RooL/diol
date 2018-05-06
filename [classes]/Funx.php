@@ -448,6 +448,25 @@ class Funx
 		
 		return $ret;
 	}
+
+
+
+	function getSubdirsByFile($file)
+	{
+		//vd($file);
+		if(strpos($file, '.')!==false)
+			$file = mb_substr($file, 0, strpos($file, '.'));
+
+		$tmp1 = mb_substr($file, -2 );
+		//vd($tmp1);
+		$tmp2 = mb_substr($file, -4, 2 );
+		//vd($tmp2);
+
+		$ret = $tmp2.'/'.$tmp1;
+
+		//vd($ret);
+		return $ret;
+	}
 	
 	
 	

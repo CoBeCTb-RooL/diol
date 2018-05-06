@@ -19,7 +19,8 @@ class Object{
 	const TASK 					= 'task';
 	const ADMIN 				= 'admin';
 	const ADMIN_GROUP 			= 'admin_group';
-	
+	const CLIENT 				= 'client';
+
 	static $items;
 	
 		
@@ -38,7 +39,8 @@ class Object{
 		$arr[self::TASK]				= new self( self::TASK, 'Задача');
 		$arr[self::ADMIN]				= new self( self::ADMIN, 'Администратор');
 		$arr[self::ADMIN_GROUP]			= new self( self::ADMIN_GROUP, 'Группа администраторов');
-		
+		$arr[self::CLIENT]				= new self( self::CLIENT, 'Клиент');
+
 		self::$items = $arr;
 	}
 	

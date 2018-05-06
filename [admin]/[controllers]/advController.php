@@ -611,7 +611,7 @@ class AdvController extends MainController{
 		
 		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
 		{
-			$MODEL['catsTree'] = AdvCat::getListTree(0, $status=null); 
+			$MODEL['catsTree'] = Client::getListTree(0, $status=null);
 			
 			$allCatBrandCmbs = CatBrandCmb::getList();
 			foreach($MODEL['catsTree'] as $key=>$cat)
@@ -643,7 +643,7 @@ class AdvController extends MainController{
 		{
 			if($catId = $_REQUEST['cat'])
 			{
-				if($cat = AdvCat::get($catId))
+				if($cat = Client::get($catId))
 				{
 					$MODEL['catBrands'] = CatBrandCmb::getByCatId($cat->id);
 					$MODEL['brandsList'] = Brand::getList();				
@@ -669,7 +669,7 @@ class AdvController extends MainController{
 		$errors = null;
 		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
 		{
-			$cat = AdvCat::get($_REQUEST['cat']);
+			$cat = Client::get($_REQUEST['cat']);
 			$brand = Brand::get($_REQUEST['brand']);
 			$checked = $_REQUEST['checked'];
 	
@@ -837,7 +837,7 @@ class AdvController extends MainController{
 	
 		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
 		{
-			$MODEL['catsTree'] = AdvCat::getListTree(0, $status=null);
+			$MODEL['catsTree'] = Client::getListTree(0, $status=null);
 			
 			# 	кол-во брендов
 			$allCatBrandCmbs = CatBrandCmb::getList();
@@ -870,7 +870,7 @@ class AdvController extends MainController{
 		{
 			if($catId = $_REQUEST['cat'])
 			{
-				if($cat = AdvCat::get($catId))
+				if($cat = Client::get($catId))
 				{
 					# 	требуются только определённые бренды, подвязанные к выбранной категории
 					$catBrandCmbs = CatBrandCmb::getByCatId($cat->id);
@@ -909,7 +909,7 @@ class AdvController extends MainController{
 		
 		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
 		{
-			$MODEL['chosenCat'] = AdvCat::get($_REQUEST['cat']);
+			$MODEL['chosenCat'] = Client::get($_REQUEST['cat']);
 	
 			if($brandId = $_REQUEST['brand'])
 			{
@@ -950,7 +950,7 @@ class AdvController extends MainController{
 		$errors = null;
 		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
 		{
-			$cat = AdvCat::get($_REQUEST['cat']);
+			$cat = Client::get($_REQUEST['cat']);
 			$brand = Brand::get($_REQUEST['brand']);
 			$artnum = ArtNum::get($_REQUEST['artnum']);
 			$checked = $_REQUEST['checked'];
@@ -1715,12 +1715,12 @@ class AdvController extends MainController{
 		
 		//vd($_REQUEST);
 		//vd($_REQUEST['catId']);
-		$MODEL['cats'] = AdvCat::getFullCatsTree($status=Status::code(Status::ACTIVE));
+		$MODEL['cats'] = Client::getFullCatsTree($status=Status::code(Status::ACTIVE));
 		
 		$MODEL['cities'] = City::getList(Country::KAZAKHSTAN_ID, Status::code(Status::ACTIVE), $orderBy='isLarge DESC, name');
 		$MODEL['chosenCity'] = $MODEL['cities'][$_REQUEST['city']];
 		
-		$MODEL['cat'] = AdvCat::get($_REQUEST['catId']);
+		$MODEL['cat'] = Client::get($_REQUEST['catId']);
 		
 		$MODEL['dateFrom'] = $_REQUEST['dateFrom'];
 		$MODEL['dateTo'] = $_REQUEST['dateTo'];
@@ -1767,7 +1767,7 @@ class AdvController extends MainController{
 			$item->user = $users[$item->userId];
 		
 		// 	инитим категории
-		$cats = AdvCat::getByIdsList(array_unique($catIdsToTake));
+		$cats = Client::getByIdsList(array_unique($catIdsToTake));
 		foreach($MODEL['items'] as $item)
 			$item->cat = $cats[$item->catId];
 		

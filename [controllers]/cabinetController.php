@@ -196,7 +196,7 @@ class CabinetController extends MainController{
 			
 		if($item)
 		{
-			$chosenCat = AdvCat::get($item->catId);
+			$chosenCat = Client::get($item->catId);
 			
 			$MODEL['chosenBrand'] = Brand::get($item->brandId);
 			# 	список арт. номеров
@@ -214,7 +214,7 @@ class CabinetController extends MainController{
 		}
 		else
 		{
-			$chosenCat = AdvCat::get($CORE->specialParams['cat']);
+			$chosenCat = Client::get($CORE->specialParams['cat']);
 			
 			$MODEL['chosenCity'] = $_GLOBALS['city'];
 		}
@@ -257,7 +257,7 @@ class CabinetController extends MainController{
 		}
 		else 
 		{
-			$MODEL['cats'] = AdvCat::getFullCatsTree(Status::code(Status::ACTIVE));
+			$MODEL['cats'] = Client::getFullCatsTree(Status::code(Status::ACTIVE));
 			
 			$crumbs = array();
 			$crumbs[] = '<a href="'.Route::getByName(Route::MAIN)->url().'">Главная</a>';
@@ -309,7 +309,7 @@ class CabinetController extends MainController{
 		# 	проверка категории
 		if(!count($errors))
 		{
-			$cat = AdvCat::get($_REQUEST['catId'], Status::code(Status::ACTIVE));
+			$cat = Client::get($_REQUEST['catId'], Status::code(Status::ACTIVE));
 			if(!$cat)
 				$errors[] = Slonne::setError('', 'Ошибка! Не передана категория');
 		}

@@ -111,8 +111,8 @@ define('NO_PHOTO_REL_PATH', '/img/no-photo.jpg');
 
 # 	ЗАГРУЖАЕМЫЕ КАРТИНКИ
 # 	макс. размеры картинки
-define('MAX_PIC_WIDTH', '1200');
-define('MAX_PIC_HEIGHT', '900');
+define('MAX_PIC_WIDTH', '2300');
+define('MAX_PIC_HEIGHT', '1500');
 
 
 

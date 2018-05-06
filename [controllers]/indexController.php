@@ -28,7 +28,7 @@ class IndexController extends MainController{
 		//vd($CONTENT);
 		
 		$MODEL['dealType'] = DealType::code($_REQUEST['type']);
-		$MODEL['cats'] = AdvCat::getFullCatsTree($status=Status::code(Status::ACTIVE));
+		$MODEL['cats'] = Client::getFullCatsTree($status=Status::code(Status::ACTIVE));
 		
 		$MODEL['dealTypes'] = DealType::$items;
 		

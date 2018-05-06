@@ -1,4 +1,4 @@
-<?php
+2<?php
 class AdminGroupController extends MainController{
 	
 	function routifyAction()

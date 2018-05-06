@@ -4,7 +4,7 @@ $startTimer = microtime(1);
 error_reporting(0);
 require_once('../config.php');
 require_once('../'.CLASSES_DIR.'/ImageResize.php');
-require_once('../'.MODELS_DIR.'/adv/AdvMedia.php');
+require_once('../'.CLASSES_DIR.'/Funx.php');
 
 function vd($a)
 {
@@ -50,7 +50,7 @@ if(count($tmp2) >= 5)
 //vd($tmp2);
 
 $finalDirPath = ROOT.'/'.UPLOAD_IMAGES_REL_DIR.PIC_CACHE_DIR_NAME.'/'.$sectionDir.$cacheInnerDirName;
-$finalDirPath .= '/'.AdvMedia::getSubdirsByFile($fileName);
+$finalDirPath .= '/'.Funx::getSubdirsByFile($fileName);
 //vd($finalDirPath);
 //vd($finalDirPath.'/'.$fileName);
 //vd(file_exists($finalDirPath.'/'.$fileName));

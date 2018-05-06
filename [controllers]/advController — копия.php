@@ -60,7 +60,7 @@ class AdvController extends MainController{
 		$MODEL['city'] = isset($_REQUEST['cityId']) ? $_GLOBALS['cities'][$_REQUEST['cityId']] : $_GLOBALS['city'];
 		
 		$MODEL['dealType'] = DealType::code($_REQUEST['type']);
-		$MODEL['cats'] = AdvCat::getFullCatsTree($status=Status::code(Status::ACTIVE));
+		$MODEL['cats'] = Client::getFullCatsTree($status=Status::code(Status::ACTIVE));
 
 		$advsQuanList = AdvQuan::getListByCityAndDealType($MODEL['city']->id, $MODEL['dealType']);
 		//vd($advsQuanList);
@@ -108,7 +108,7 @@ class AdvController extends MainController{
 		# 	тип объявления - КУПЛЮ / ПРОДАМ...
 		$MODEL['dealType'] = DealType::code($_REQUEST['type']);
 		
-		$cat = AdvCat::get($CORE->params[1]);
+		$cat = Client::get($CORE->params[1]);
 
 		if($cat)
 		{
@@ -330,7 +330,7 @@ class AdvController extends MainController{
 		//Startup::execute(Startup::FRONTEND);
 		$CORE->setLayout(null);
 
-		$cat = AdvCat::get($_REQUEST['cat']);
+		$cat = Client::get($_REQUEST['cat']);
 		$brand = Brand::get($_REQUEST['brand']);
 		$MODEL['artnums'] = ArtNum::getList(Status::$items[Status::ACTIVE], $brand->id, $cat->id);
 		$MODEL['otherOption'] = $_REQUEST['otherOption'];
