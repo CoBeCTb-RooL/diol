@@ -38,11 +38,15 @@ elseif(strpos($uri, '/'.ADMIN_URL_SIGN.'/settings') === 0 )
 
 
 elseif(strpos($uri, '/'.ADMIN_URL_SIGN.'/tasks') === 0 )
-    $section = 'tasks';
+	$section = 'tasks';
+
+elseif(strpos($uri, '/'.ADMIN_URL_SIGN.'/clients') === 0 )
+	$section = 'clients';
+
+elseif(strpos($uri, '/'.ADMIN_URL_SIGN.'/schedule') === 0 )
+	$section = 'schedule';
 
 
-	
-	
 # 	ЭТО ДОЛЖНО БЫТЬ В САМОМ КОНЦЕ!
 elseif(strpos($uri, '/'.ADMIN_URL_SIGN) === 0)
 	$section = 'index';	
@@ -58,21 +62,45 @@ elseif(strpos($uri, '/'.ADMIN_URL_SIGN) === 0)
 			<li><a class="<?=$section=='index' ? 'active' : ''?>" href="/<?=ADMIN_URL_SIGN?>/"><i class="fa fa-pagelines"></i> Главная</a></li>
 
 
-            <li>
-                <a class="<?=$section=='content' ? 'active' : ''?>" href="#"><i class="fa  fa-book" aria-hidden="true"></i> Контент</a>
-                <ul>
-                    <li class="<?=$subsection=='pages' ? 'active' : ''?>"><a  href="/<?=ADMIN_URL_SIGN?>/entity/showList/pages/"><i class="fa fa-sitemap"></i> Разделы</a></li>
-                    <li class="<?=$subsection=='news' ? 'active' : ''?>"><a  href="/<?=ADMIN_URL_SIGN?>/entity/showList/news/"><i class="fa fa-newspaper-o"></i> Новости</a></li>
-                </ul>
-            </li>
+<!--            <li>-->
+<!--                <a class="--><?//=$section=='content' ? 'active' : ''?><!--" href="#"><i class="fa  fa-book" aria-hidden="true"></i> Контент</a>-->
+<!--                <ul>-->
+<!--                    <li class="--><?//=$subsection=='pages' ? 'active' : ''?><!--"><a  href="/--><?//=ADMIN_URL_SIGN?><!--/entity/showList/pages/"><i class="fa fa-sitemap"></i> Разделы</a></li>-->
+<!--                    <li class="--><?//=$subsection=='news' ? 'active' : ''?><!--"><a  href="/--><?//=ADMIN_URL_SIGN?><!--/entity/showList/news/"><i class="fa fa-newspaper-o"></i> Новости</a></li>-->
+<!--                </ul>-->
+<!--            </li>-->
 
 
-            <?
-            if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::SYSTEM_ADMINISTRATOR))
-            {?>
-            <li><a class="<?=$section=='services' ? 'active' : ''?>" href="/<?=ADMIN_URL_SIGN?>/entity/showList/services/"><i class="fa fa-pagelines"></i> Услуги</a></li>
-            <?
-            }?>
+			<?
+			if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::SYSTEM_ADMINISTRATOR) || 1) ////!!!!
+			{?>
+                <li><a class="<?=$section=='schedule' ? 'active' : ''?>" href="/<?=ADMIN_URL_SIGN?>/schedule"><i class="fa fa-user"></i> Журнал</a></li>
+				<?
+			}?>
+
+			<?
+			if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::SYSTEM_ADMINISTRATOR))
+			{?>
+                <li><a class="<?=$section=='clients' ? 'active' : ''?>" href="/<?=ADMIN_URL_SIGN?>/clients"><i class="fa fa-user"></i> Клиенты</a></li>
+				<?
+			}?>
+
+
+
+			<?
+			if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::SYSTEM_ADMINISTRATOR))
+			{?>
+                <li><a class="<?=$section=='services' ? 'active' : ''?>" href="/<?=ADMIN_URL_SIGN?>/entity/showList/services/"><i class="fa fa-pagelines"></i> Услуги</a></li>
+				<?
+			}?>
+
+
+			<?
+			if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::SYSTEM_ADMINISTRATOR))
+			{?>
+                <li><a class="<?=$subsection=='admin' ? 'active' : ''?>" href="/<?=ADMIN_URL_SIGN?>/admin"><i class="fa fa-user"></i> Врачи</a></li>
+				<?
+			}?>
 
 			
 			<?php 

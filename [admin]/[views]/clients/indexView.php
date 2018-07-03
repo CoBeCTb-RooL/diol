@@ -12,17 +12,12 @@
 			url: '/<?=ADMIN_URL_SIGN?>/clients/list',
 			data: opts,
 			beforeSend: function(){$.fancybox.showLoading()},
+            complete: function(){ $("#cats").css("opacity", "1"); $('#cats').slideDown('fast'); $('#items').slideUp('fast');  $.fancybox.hideLoading() },
 			success: function(data){
 				$('#cats').html(data)
 			},
-			error: function(e){},
-			complete: function(){
-				$("#cats").css("opacity", "1");
-				
-				$('#cats').slideDown('fast'); 
-				$('#items').slideUp('fast')
-				$.fancybox.hideLoading()
-			}
+			error: function(e){}
+
 		});
 	} 
 
@@ -143,7 +138,7 @@
 
 
 	$(document).ready(function(){
-		list(<?=$_REQUEST['catId']?>)
+		list()
 	});
 </script>
 

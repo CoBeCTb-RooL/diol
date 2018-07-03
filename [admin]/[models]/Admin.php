@@ -10,6 +10,7 @@ class Admin
 	public $lastAuth;
 	public $groupId;
 	public $group;
+	public $speciality;
 	public $status;
 	
 			
@@ -38,8 +39,9 @@ class Admin
 		$m->regTime = $arr['regTime'];
 		$m->lastAuth = $arr['lastAuth'];
 		$m->groupId = $arr['groupId'];
+		$m->speciality = $arr['speciality'];
 		$m->status = Status::num($arr['status']);
-	
+
 		return $m;
 	}
 	

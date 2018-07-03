@@ -20,6 +20,7 @@ class Object{
 	const ADMIN 				= 'admin';
 	const ADMIN_GROUP 			= 'admin_group';
 	const CLIENT 				= 'client';
+	const SERVICE 				= 'service';
 
 	static $items;
 	
@@ -40,6 +41,7 @@ class Object{
 		$arr[self::ADMIN]				= new self( self::ADMIN, 'Администратор');
 		$arr[self::ADMIN_GROUP]			= new self( self::ADMIN_GROUP, 'Группа администраторов');
 		$arr[self::CLIENT]				= new self( self::CLIENT, 'Клиент');
+		$arr[self::SERVICE]				= new self( self::SERVICE, 'Услуга');
 
 		self::$items = $arr;
 	}

@@ -1,5 +1,6 @@
 <?php
 $list = $MODEL['list'];
+$params = $MODEL['params'];
 $i=0;
 //vd($MODEL);
 //vd($client);
@@ -35,6 +36,20 @@ $i=0;
 
 
 <h1>Клиенты</h1>
+
+
+<div class="filters">
+    <div class="section user-id">
+        <h1>Телефон:</h1>
+        <input type="text" name="phone" value="<?=$params['phone']?>" style="width: 100px;" />
+        <input type="button" value="найти" onclick="opts.phone=$('.filters input[name=phone]').val(); opts.p=1;  window.parent.list(); return false; " />&nbsp;<input type="button" value="&times;" onclick="opts.phone=''; opts.p=1; window.parent.list(); return false; " />
+    </div>
+<!--    <div class="section user-id">-->
+<!--        <h1>Email:</h1>-->
+<!--        <input type="text" name="email" value="--><?//=$params['email']?><!--" style="width: 100px;" />-->
+<!--        <input type="button" value="найти" onclick="opts.email=$('.filters input[name=email]').val(); opts.p=1;  window.parent.list(); return false; " />&nbsp;<input type="button" value="&times;" onclick="opts.email=''; opts.p=1; window.parent.list(); return false; " />-->
+<!--    </div>-->
+</div>
 
 
 

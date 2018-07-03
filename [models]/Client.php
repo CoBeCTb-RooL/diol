@@ -37,15 +37,14 @@ class Client{
 
 	function getList($params)
 	{
+		$ret = [];
 		$sql="SELECT * FROM `".self::TBL."` WHERE 1 ".self::getListInnerSql($params);
 		//vd($sql);
 		$qr=DB::query($sql);
 		echo mysql_error();
 		while($next=mysql_fetch_array($qr, MYSQL_ASSOC))
-		{
 			$ret[] = self::init($next);
-		}
-		
+
 		return $ret;
 	}
 	
@@ -77,7 +76,31 @@ class Client{
 		$sql="";
 
 		if(isset($params['status']) && $params['status'])
-			$sql.="AND status='".intval($params['status']->num)."";
+			$sql.="AND status='".intval($params['status']->num)."'";
+
+		if(isset($params['search']) && $params['search'])
+			$sql.=" AND 
+				(
+					surname LIKE '%".strPrepare($params['search'])."%'
+					OR  name LIKE '%".strPrepare($params['search'])."%'
+					OR  fathername LIKE '%".strPrepare($params['search'])."%'
+					OR  phone LIKE '%".strPrepare($params['search'])."%'
+				)";
+
+		if(isset($params['surnameLike']) && $params['surnameLike'])
+			$sql .=" AND surname LIKE '%".strPrepare($params['surnameLike'])."%'";
+		if(isset($params['nameLike']) && $params['nameLike'])
+			$sql .=" AND name LIKE '%".strPrepare($params['nameLike'])."%'";
+		if(isset($params['fatherNameLike']) && $params['fatherNameLike'])
+			$sql .=" AND fatherName LIKE '%".strPrepare($params['fatherNameLike'])."%'";
+		if(isset($params['phoneLike']) && $params['phoneLike'])
+			$sql .=" AND phone LIKE '%".strPrepare($params['phoneLike'])."%'";
+
+
+		if(isset($params['phone']) && $params['phone'])
+			$sql.=" AND phone LIKE '%".strPrepare($params['phone'])."%' ";
+		if(isset($params['email']) && $params['email'])
+			$sql.=" AND email LIKE '%".strPrepare($params['email'])."%' ";
 
 		if(isset($params['from']) && isset($params['count']))
 			$sql.=" LIMIT  ".$params['from'].", ".$params['count']."";
@@ -190,7 +213,7 @@ class Client{
 		  `surname`='".strPrepare($this->surname)."'
 		, `name`='".strPrepare($this->name)."'
 		, `fathername`='".strPrepare($this->fathername)."'
-		, `phone`='".strPrepare($this->phone)."'
+		, `phone`='".strPrepare(str_replace(' ', '', $this->phone))."'
 		, `address`='".strPrepare($this->address)."'
 		, `status` = '".intval($this->status->num)."'
 		, `updatedAt` = NOW()

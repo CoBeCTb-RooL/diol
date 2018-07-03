@@ -38,18 +38,24 @@ class ClientsController extends MainController{
 			$MODEL['p'] = $_REQUEST['p'] ? $_REQUEST['p'] : 1;
 			$MODEL['elPP'] = $_REQUEST['elPP'] ? $_REQUEST['elPP'] : 10;
 
-			$params =[];
+			$params =[
+				'phone' => $_REQUEST['phone'],
+				'email' => $_REQUEST['email'],
+			];
 			$MODEL['totalCount'] = Client::getCount($params);
 
 			$params['from'] = ($MODEL['p']-1) * $MODEL['elPP'];
 			$params['count'] = $MODEL['elPP'];
 			$MODEL['list'] = Client::getList($params);
+			$MODEL['params'] = $params;
 		}
 		else
 			$MODEL['error'] = Error::NO_ACCESS_ERROR;
 
 		Core::renderView('clients/list.php', $MODEL);
 	}
+
+
 	
 	
 	function switchStatus()
