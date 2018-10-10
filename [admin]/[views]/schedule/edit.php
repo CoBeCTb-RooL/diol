@@ -1,6 +1,28 @@
 <?php
 $item = $MODEL['item'];
 $doctors = $MODEL['doctors'];
+$editOpts = $MODEL['editOpts'];
+
+
+if($item)
+    $chosenDate = date('Y-m-d', strtotime($item->dt ));
+elseif($editOpts['date'])
+    $chosenDate = $editOpts['date'];
+else $chosenDate = date('Y-m-d');
+
+
+if($item)
+	$chosenTime = $item->getTime();
+elseif($editOpts['time'])
+	$chosenTime = $editOpts['time'];
+
+
+
+if($item)
+	$chosenDoctorId = $item->doctorId;
+elseif($editOpts['doctorId'])
+    $chosenDoctorId = $editOpts['doctorId'];
+
 
 ?>
 
@@ -25,6 +47,7 @@ $doctors = $MODEL['doctors'];
             <div class="clients-search-form" style="border: 0px solid red; ">
                 <table>
                     <tr>
+                        <td>Поиск:</td>
                         <td><!--Фамилия: <br>--><input type="text" name="clientSurname" value="" onkeyup="Schedule.clientSearch()"  placeholder="фамилия"/></td>
                         <td><!--Имя: <br>--><input type="text" name="clientName" value="" onkeyup="Schedule.clientSearch()" placeholder="имя" /></td>
                         <td><!--Отчество: <br>--><input type="text" name="clientFathername" value="" onkeyup="Schedule.clientSearch()" placeholder="отчество" /></td>
@@ -34,7 +57,7 @@ $doctors = $MODEL['doctors'];
 
                 <div class="clients-list">
                     <div class="loading" style="font-size: .8em; display: none; ">загрузка...</div>
-                    <div class="inner" style="overflow: auto; max-height: 150px; ">asdasd</div>
+                    <div class="inner" style="overflow: auto; max-height: 150px; "></div>
                 </div>
 
             </div>
@@ -82,7 +105,7 @@ $doctors = $MODEL['doctors'];
     <div class="field-wrapper">
         <span class="label" >Дата<span class="required">*</span>: </span>
         <span class="value" >
-			<input type="text" id="date" name="date" value="<?=date('Y-m-d', ($item->dt ? strtotime($item->dt) : time()))?>" style="width: 60px; " />
+			<input type="text" id="date" name="date" value="<?=$chosenDate?>" style="width: 60px; " />
             <img id="date-calendar-btn" src="/js/calendar/calendar.jpg" style="border:0px;">
             <script>
 						Calendar.setup({
@@ -103,7 +126,7 @@ $doctors = $MODEL['doctors'];
                 $timeArr = ScheduleEntry::timeArr();
                 foreach ($timeArr as $time)
                 {?>
-                    <option value="<?=$time?>" <?=$item && $time==$item->getTime() ? 'selected' : ''?> ><?=$time?></option>
+                    <option value="<?=$time?>" <?= $time==$chosenTime ? 'selected' : ''?> ><?=$time?></option>
                 <?
                 }?>
             </select>

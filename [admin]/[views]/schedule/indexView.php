@@ -99,11 +99,15 @@
 
 
     var opts = {
-        p: 1,
-        elPP: 10,
+        date: '<?=date('Y-m-d')?>'
     }
 
-	function list()
+
+    var editOpts = {
+        date: '<?=date('Y-m-d')?>'
+    }
+
+	function list1()
 	{
 		$.ajax({
 			url: '/<?=ADMIN_URL_SIGN?>/schedule/list',
@@ -123,10 +127,11 @@
 	function edit(id)
 	{
 		$.fancybox.showLoading()
-		
+
+        editOpts.id = id
 		$.ajax({
 			url: '/<?=ADMIN_URL_SIGN?>/schedule/edit',
-			data: 'id='+id+'',
+			data: {editOpts: editOpts},
 			beforeSend: function(){$.fancybox.showLoading()},
 			success: function(data){
 				$('#float').html(data)
@@ -147,13 +152,20 @@
 		$.fancybox.hideLoading()
 		if(!data.errors)
 		{
-			list()
-			//$.fancybox.close()
+			list1()
+			$.fancybox.close()
 			notice('Сохранено')
 		}
 		else
 			showErrors(data.errors)
 	}
+
+
+
+	function setDate(val){
+        opts.date=val;
+        editOpts.date=val;
+    }
 
 
 	/*function listSubmitStart()
@@ -206,7 +218,7 @@
 
 
 	$(document).ready(function(){
-		list()
+		list1()
        // edit(1)
 	});
 </script>

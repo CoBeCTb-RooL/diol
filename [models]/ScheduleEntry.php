@@ -80,6 +80,7 @@ class ScheduleEntry{
 	
 	function getListInnerSql($params)
 	{
+		vd($params);
 		$sql="";
 
 		if(isset($params['status']) && $params['status'])
@@ -96,6 +97,8 @@ class ScheduleEntry{
 		if(isset($params['doctorId']) && $params['doctorId'])
 			$sql.=" AND doctorId=".intval($params['doctorId'])." ";
 
+		if(isset($params['date']) && $params['date'])
+			$sql.=" AND DATE(dt)='".strPrepare($params['date'])."' ";
 		if(isset($params['dateFrom']) && $params['dateFrom'])
 			$sql.=" AND DATE(dt)>='".strPrepare($params['dateFrom'])."' ";
 		if(isset($params['dateTo']) && $params['dateTo'])

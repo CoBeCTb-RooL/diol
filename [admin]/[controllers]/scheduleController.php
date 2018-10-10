@@ -36,13 +36,10 @@ class ScheduleController extends MainController{
 		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
 		{
 			//vd($_REQUEST);
+			$params = $_REQUEST;
 			$MODEL['p'] = $_REQUEST['p'] ? $_REQUEST['p'] : 1;
 			$MODEL['elPP'] = $_REQUEST['elPP'] ? $_REQUEST['elPP'] : 10;
 
-			$params =[
-				'phone' => $_REQUEST['phone'],
-				'email' => $_REQUEST['email'],
-			];
 			$MODEL['totalCount'] = ScheduleEntry::getCount($params);
 
 			$params['from'] = ($MODEL['p']-1) * $MODEL['elPP'];
@@ -63,6 +60,8 @@ class ScheduleController extends MainController{
 				$listByTimes[$entry->getTime()][] = $entry;
 			}
 			$MODEL['listByTimes'] = $listByTimes;
+
+			$MODEL['doctors'] = Admin::getActiveDoctors();
 		}
 		else
 			$MODEL['error'] = Error::NO_ACCESS_ERROR;
@@ -81,24 +80,18 @@ class ScheduleController extends MainController{
 
 		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR | Role::DOCTOR))
 		{
-			if($_REQUEST['id'])
+			if($_REQUEST['editOpts']['id'])
 			{
-				$MODEL['item'] = ScheduleEntry::get($_REQUEST['id']);
+				$MODEL['item'] = ScheduleEntry::get($_REQUEST['editOpts']['id']);
 				if($MODEL['item'])
 					$MODEL['item']->initClient();
 			}
 
-			$tmp = Admin::getList();
-			$doctors = [];
-			foreach ($tmp as $v)
-			{
-				$v->initGroup();
-				if($v->hasRole(Role::DOCTOR) && $v->status->code == Status::ACTIVE)
-					$doctors[] = $v;
-			}
-			$MODEL['doctors'] = $doctors;
+			$MODEL['doctors'] = Admin::getActiveDoctors();
 
 			$MODEL['services'] = Service::getList(['active'=>1, ]);
+
+			$MODEL['editOpts'] = $_REQUEST['editOpts'];
 
 			/*if($MODEL['item'])
 				$MODEL['item']->initMedia();*/
@@ -141,82 +134,6 @@ class ScheduleController extends MainController{
 
 		$json['errors']=$errors;
 		echo '<script>window.top.editSubmitComplete('.json_encode($json).')</script>';
-
-		die;
-
-
-		//usleep(800000);
-		$errors = null;
-		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
-		{
-			if($_REQUEST['clientId'] = intval($_REQUEST['clientId']))
-			{
-				$cat = ScheduleEntry::get($_REQUEST['clientId']);
-				if(!$cat)
-					$errors[] = Slonne::setError('', 'Ошибка! Категория не найдена '.$_REQUEST['clientId'].'');
-			}
-			else
-				$cat = new ScheduleEntry();
-
-				if(!count($errors))
-				{
-					$cat->setData($_REQUEST);
-//					vd($cat);
-					$errors = $cat->validate();
-					if(!count($errors))
-					{
-						if($cat->id)
-							$cat->update();
-						else
-							$cat->id = $cat->insert();
-
-						# 	обрабатываем медию
-						//vd($cat);
-						Slonne::fixFILES();
-						//vd($_FILES);
-						if(count($_FILES['media']))
-							foreach ($_FILES['media'] as $media)
-							{
-								$destDir = ROOT.'/'.UPLOAD_IMAGES_REL_DIR.'schedule/';
-								$newFileName = Funx::generateName();
-								$destDir .= Funx::getSubdirsByFile($newFileName);
-								//vd($destDir);
-								//echo '<hr />';
-								$saveFileResult = Media2::savePic($media, $destDir, $newFileName);
-								if(!$saveFileResult['problem'])
-								{
-									$path = 'schedule/'.Funx::getSubdirsByFile($newFileName).'/'.$saveFileResult['newFileName'];
-									$m = new Media2();
-									$m->objId = $cat->id;
-									$m->objType = Object::CLIENT;
-									$m->status = Status::code(Status::ACTIVE);
-									$m->path = $path;
-									$m->idx = 9999;
-
-									$m->insert();
-								}
-								else
-									$warnings[] = $saveFileResult['problem'];
-							}
-					}
-
-					//vd($_REQUEST);
-					foreach ($_REQUEST['media'] as $mediaId=>$text)
-					{
-						//vd($mediaId);
-						//vd($text);
-						$m = Media2::get($mediaId);
-						$m->title = trim(strPrepare($text));
-						$m->update();
-						//vd($m);
-					}
-				}
-		}
-		else
-			$errors[] = new Error(Error::NO_ACCESS_ERROR);
-
-			$json['errors']=$errors;
-			echo '<script>window.top.editSubmitComplete('.json_encode($json).')</script>';
 	}
 
 

@@ -270,7 +270,26 @@ class Admin
 	{
 		return ($this->group->role & $role) ? true : false;
 	}
-	
+
+
+
+
+	function getActiveDoctors()
+	{
+		$ret = [];
+
+		$tmp = self::getList();
+		$doctors = [];
+		foreach ($tmp as $v)
+		{
+			$v->initGroup();
+			if($v->hasRole(Role::DOCTOR) && $v->status->code == Status::ACTIVE && $v->id!=7)
+				$doctors[] = $v;
+		}
+		$ret = $doctors;
+
+		return $ret;
+	}
 	
 	
 } 
