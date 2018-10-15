@@ -51,7 +51,7 @@
 		if(!data.errors)
 		{
 			list()
-			//$.fancybox.close()
+			$.fancybox.close()
 			notice('Сохранено')
 		}
 		else
