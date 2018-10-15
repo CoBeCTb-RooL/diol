@@ -12,10 +12,10 @@ if(		strpos($uri, '/'.ADMIN_URL_SIGN.'/entity/showList/pages') === 0)
 	$section = 'content';
 	$subsection = 'pages';
 }
-elseif(strpos($uri, '/'.ADMIN_URL_SIGN.'/entity/showList/news') === 0)
+elseif(strpos($uri, '/'.ADMIN_URL_SIGN.'/entity/showList/services') === 0)
 {
-	$section = 'content';
-	$subsection = 'news';
+	$section = 'services';
+//	$subsection = 'news';
 }
 
 elseif(strpos($uri, '/'.ADMIN_URL_SIGN.'/adminGroup') === 0)
@@ -59,7 +59,7 @@ elseif(strpos($uri, '/'.ADMIN_URL_SIGN) === 0)
 <div class="top-menu-wrapper">
 	<div id="menu">
 		<ul class="primary">
-			<li><a class="<?=$section=='index' ? 'active' : ''?>" href="/<?=ADMIN_URL_SIGN?>/"><i class="fa fa-pagelines"></i> Главная</a></li>
+<!--			<li><a class="--><?//=$section=='index' ? 'active' : ''?><!--" href="/--><?//=ADMIN_URL_SIGN?><!--/"><i class="fa fa-pagelines"></i> Главная</a></li>-->
 
 
 <!--            <li>-->
@@ -89,7 +89,8 @@ elseif(strpos($uri, '/'.ADMIN_URL_SIGN) === 0)
 
 			<?
 			if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::SYSTEM_ADMINISTRATOR))
-			{?>
+			{
+			    ?>
                 <li><a class="<?=$section=='services' ? 'active' : ''?>" href="/<?=ADMIN_URL_SIGN?>/entity/showList/services/"><i class="fa fa-pagelines"></i> Услуги</a></li>
 				<?
 			}?>
@@ -104,7 +105,7 @@ elseif(strpos($uri, '/'.ADMIN_URL_SIGN) === 0)
 
 			
 			<?php 
-			if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::SYSTEM_ADMINISTRATOR | Role::ADMIN_GROUPS_MODERATOR | Role::ADMINS_MODERATOR) )
+			if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::SYSTEM_ADMINISTRATOR | Role::ADMIN_GROUPS_MODERATOR | Role::ADMINS_MODERATOR)  && !$ADMIN->isOperator() )
 			{?>
 			<li>
 				<a class="<?=$section=='system' ? 'active' : ''?>" href="#"><i class="fa fa-cubes"></i> Системные</a>
@@ -135,18 +136,18 @@ elseif(strpos($uri, '/'.ADMIN_URL_SIGN) === 0)
 					}?>
 					<li class="delimiter"><hr /></li>
 					
-					<?php 
-					if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR ))
-					{?>
-					<li class="<?=$subsection=='settings' ? 'active' : ''?>" ><a href="/<?=ADMIN_URL_SIGN?>/settings/"><i class="fa fa-sliders"></i> Настройки сайта</a></li>
-					<li class="<?=$subsection=='backup' ? 'active' : ''?>"><a href="/<?=ADMIN_URL_SIGN?>/backup/"><i class="fa fa-database"></i> Бэкап базы</a></li>
-                    <li class="delimiter"><hr /></li>
-					<?php 
-					}?>
+<!--					--><?php //
+//					if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR ))
+//					{?>
+<!--					<li class="--><?//=$subsection=='settings' ? 'active' : ''?><!--" ><a href="/--><?//=ADMIN_URL_SIGN?><!--/settings/"><i class="fa fa-sliders"></i> Настройки сайта</a></li>-->
+<!--					<li class="--><?//=$subsection=='backup' ? 'active' : ''?><!--"><a href="/--><?//=ADMIN_URL_SIGN?><!--/backup/"><i class="fa fa-database"></i> Бэкап базы</a></li>-->
+<!--                    <li class="delimiter"><hr /></li>-->
+<!--					--><?php //
+//					}?>
 
 
                     <?php
-                    if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR ) || $ADMIN->hasRole(Role::ADMINS_MODERATOR ))
+                    if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR ) || $ADMIN->hasRole(Role::ADMINS_MODERATOR ) && !$ADMIN->isOperator())
                     {?>
 
                         <li class="<?=$subsection=='adminActivity' ? 'active' : ''?>"><a href="/<?=ADMIN_URL_SIGN?>/adminActivity/"><i class="fa fa-user "></i> Активность админов</a></li>

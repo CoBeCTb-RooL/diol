@@ -149,7 +149,7 @@
 <div id="cats">Загрузка....</div>
 <div id="items" style="display: none; "> Загрузка....</div>
 
-<iframe name="frame7" style="display: ; "></iframe>
+<iframe name="frame7" style="display: none; "></iframe>
 
 
 

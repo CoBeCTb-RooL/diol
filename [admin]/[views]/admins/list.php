@@ -32,11 +32,16 @@ if(count($list) )
 		<tr>
 			<th>#</th>
 			<th>Акт.</th>
-			<th>Администратор</th>
+			<th>Специалист</th>
 			<th>E-mail</th>
+
+            <?
+            if(!$ADMIN->isOperator())
+            {?>
 			<th>Группа</th>
-			
 			<th>Удалить</th>
+            <?
+            }?>
 		</tr>
 		<?php 
 		foreach($list as $key=>$item)
@@ -52,22 +57,28 @@ if(count($list) )
 				</td>
 				<td ><?=$item->email?></td>
 
-				<td class="group group-status-<?=$item->group->status->code?>" >
-				<?php 
-				if($item->group)
-				{?>
-					<?=$item->group->name?> <span class="hint">(<?=$item->group->status->name?>)</span>
-					<a href="<?=$item->group->adminUrl()?>" target="_blank" style="font-weight: normal; display: block; font-size: 9px;  ">смотреть</a>
-				<?php 
-				}
-				else 
-				{?>
-					<span style="font-weight: normal !important; font-style: italic; ">-группа не выбрана-</span>
-				<?php 	
-				}?>
-				</td>
-				
+
+
+                <?
+                if(!$ADMIN->isOperator())
+                {?>
+                <td class="group group-status-<?=$item->group->status->code?>" >
+                    <?php
+                    if($item->group)
+                    {?>
+                        <?=$item->group->name?> <span class="hint">(<?=$item->group->status->name?>)</span>
+                        <a href="<?=$item->group->adminUrl()?>" target="_blank" style="font-weight: normal; display: block; font-size: 9px;  ">смотреть</a>
+                        <?php
+                    }
+                    else
+                    {?>
+                        <span style="font-weight: normal !important; font-style: italic; ">-группа не выбрана-</span>
+                        <?php
+                    }?>
+                </td>
 				<td><a href="#" onclick="if(confirm('Удалить администратора?')){adminsDelete(<?=$item->id?>)}" style="color: red; font-size: 10px; ">&times; удалить</a></td>
+                <?
+                }?>
 			</tr>
 		<?php 
 		}?>
@@ -75,7 +86,7 @@ if(count($list) )
 	
 
 	
-	<input id="add-btn" type="button" onclick="adminsEdit(); " value="+ Новый администратор">
+	<input id="add-btn" type="button" onclick="adminsEdit(); " value="Добавить врача">
 <?php
 }
 else

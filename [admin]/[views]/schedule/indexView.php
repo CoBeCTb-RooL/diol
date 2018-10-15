@@ -120,27 +120,49 @@
 			error: function(e){}
 
 		});
-	} 
+	}
 
 
 
-	function edit(id)
-	{
-		$.fancybox.showLoading()
+    function edit(id)
+    {
+        $.fancybox.showLoading()
 
         editOpts.id = id
-		$.ajax({
-			url: '/<?=ADMIN_URL_SIGN?>/schedule/edit',
-			data: {editOpts: editOpts},
-			beforeSend: function(){$.fancybox.showLoading()},
-			success: function(data){
-				$('#float').html(data)
-				$.fancybox('#float');
-			},
-			error: function(e){alert('Возникла ошибка на сервере... Попробуйте позже.')},
-			complete: function(){$.fancybox.hideLoading()}
-		});
-	}
+        $.ajax({
+            url: '/<?=ADMIN_URL_SIGN?>/schedule/edit',
+            data: {editOpts: editOpts},
+            beforeSend: function(){$.fancybox.showLoading()},
+            success: function(data){
+                $('#float').html(data)
+                $.fancybox('#float');
+            },
+            error: function(e){alert('Возникла ошибка на сервере... Попробуйте позже.')},
+            complete: function(){$.fancybox.hideLoading()}
+        });
+    }
+
+
+
+    function del(id)
+    {
+        if(!confirm('Удалить запись?'))
+            return
+        editOpts.id = id
+        $.ajax({
+            url: '/<?=ADMIN_URL_SIGN?>/schedule/delete',
+            data: {id:id},
+            beforeSend: function(){$.fancybox.showLoading()},
+            success: function(data){
+                list1()
+            },
+            error: function(e){alert('Возникла ошибка на сервере... Попробуйте позже.')},
+            complete: function(){$.fancybox.hideLoading()}
+        });
+    }
+
+
+
 
 
 	function editSubmitStart()
@@ -230,7 +252,7 @@
 <div id="cats">Загрузка....</div>
 <div id="items" style="display: none; "> Загрузка....</div>
 
-<iframe name="frame7" style="display: ; "></iframe>
+<iframe name="frame7" style="display: none; "></iframe>
 
 
 

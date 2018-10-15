@@ -81,18 +81,18 @@ class Client{
 		if(isset($params['search']) && $params['search'])
 			$sql.=" AND 
 				(
-					surname LIKE '%".strPrepare($params['search'])."%'
-					OR  name LIKE '%".strPrepare($params['search'])."%'
-					OR  fathername LIKE '%".strPrepare($params['search'])."%'
+					LOWER(surname) LIKE '%".strPrepare(mb_strtolower($params['search']))."%'
+					OR  LOWER(name) LIKE '%".strPrepare(mb_strtolower($params['search']))."%'
+					OR  LOWER(fathername) LIKE '%".strPrepare(mb_strtolower($params['search']))."%'
 					OR  phone LIKE '%".strPrepare($params['search'])."%'
 				)";
 
 		if(isset($params['surnameLike']) && $params['surnameLike'])
-			$sql .=" AND surname LIKE '%".strPrepare($params['surnameLike'])."%'";
+			$sql .=" AND LOWER(surname) LIKE '%".strPrepare(mb_strtolower($params['surnameLike']))."%'";
 		if(isset($params['nameLike']) && $params['nameLike'])
-			$sql .=" AND name LIKE '%".strPrepare($params['nameLike'])."%'";
+			$sql .=" AND LOWER(name) LIKE '%".strPrepare(mb_strtolower($params['nameLike']))."%'";
 		if(isset($params['fatherNameLike']) && $params['fatherNameLike'])
-			$sql .=" AND fatherName LIKE '%".strPrepare($params['fatherNameLike'])."%'";
+			$sql .=" AND LOWER(fatherName) LIKE '%".strPrepare(mb_strtolower($params['fatherNameLike']))."%'";
 		if(isset($params['phoneLike']) && $params['phoneLike'])
 			$sql .=" AND phone LIKE '%".strPrepare($params['phoneLike'])."%'";
 

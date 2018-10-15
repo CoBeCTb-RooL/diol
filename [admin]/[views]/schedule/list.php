@@ -8,6 +8,8 @@ $listByTimes = $MODEL['listByTimes'];
 //vd($MODEL);
 //vd($client);
 
+
+
 $doctors = $MODEL['doctors'];
 
 
@@ -74,18 +76,23 @@ $doctors = $MODEL['doctors'];
     </div>
 
 
+    <?
+    if(!$ADMIN->isDoctor())
+    {?>
     <div class="section user-id">
         <h1>Врач:</h1>
         <select onchange="opts.doctorId=$(this).val(); list1(); ">
             <option value="">-все-</option>
             <?
-            foreach ($doctors as $doctor)
-            {?>
-            <option value="<?=$doctor->id?>" <?=($params['doctorId']==$doctor->id) ? ' selected ' : ''?>><?=$doctor->name?></option>
-            <?
-            }?>
+            foreach ($doctors as $doctor) {
+                ?>
+                <option value="<?= $doctor->id ?>" <?= ($params['doctorId'] == $doctor->id) ? ' selected ' : '' ?>><?= $doctor->name ?></option>
+                <?
+            } ?>
         </select>
     </div>
+    <?
+    }?>
 
 </div>
 
@@ -119,7 +126,17 @@ $doctors = $MODEL['doctors'];
     <!--                                    --><?//=$entry->service->name?>
     <!--                                </td>-->
                                     <td>Врач: <?=$entry->doctor->name?></td>
-                                    <td class="btns"><a href="#" onclick="edit(<?=$entry->id?>)">ред.</a></td>
+                                    <td class="btns">
+                                        <?
+                                        if(!$ADMIN->isDoctor())
+                                        {?>
+                                        <nobr>
+                                            <a href="#" onclick="edit(<?=$entry->id?>)">ред.</a>&nbsp;&nbsp;&nbsp;
+                                            <a style="color: red; " href="#" onclick="del(<?=$entry->id?>)">удалить</a>
+                                        </nobr>
+                                        <?
+                                        }?>
+                                    </td>
                                 </tr>
                             </table>
                         </div>

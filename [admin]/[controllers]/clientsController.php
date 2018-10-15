@@ -39,8 +39,13 @@ class ClientsController extends MainController{
 			$MODEL['elPP'] = $_REQUEST['elPP'] ? $_REQUEST['elPP'] : 10;
 
 			$params =[
-				'phone' => $_REQUEST['phone'],
-				'email' => $_REQUEST['email'],
+				'phone' => clearPhone($_REQUEST['phone']),
+                'email' => mb_strtolower($_REQUEST['email']),
+
+                'surnameLike' => $_REQUEST['surname'],
+                'nameLike' => $_REQUEST['name'],
+                'fatherNameLike' => $_REQUEST['fathername'],
+
 			];
 			$MODEL['totalCount'] = Client::getCount($params);
 

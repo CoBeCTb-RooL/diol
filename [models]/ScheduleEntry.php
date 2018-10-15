@@ -80,7 +80,7 @@ class ScheduleEntry{
 	
 	function getListInnerSql($params)
 	{
-		vd($params);
+		//vd($params);
 		$sql="";
 
 		if(isset($params['status']) && $params['status'])

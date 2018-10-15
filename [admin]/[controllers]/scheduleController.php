@@ -33,7 +33,7 @@ class ScheduleController extends MainController{
 		Startup::execute(Startup::ADMIN);
 		$CORE->setLayout(null);
 
-		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
+		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR | Role::DOCTOR) )
 		{
 			//vd($_REQUEST);
 			$params = $_REQUEST;
@@ -42,6 +42,9 @@ class ScheduleController extends MainController{
 
 			$MODEL['totalCount'] = ScheduleEntry::getCount($params);
 
+			if($ADMIN->isDoctor())
+                $params['doctorId'] = $ADMIN->id;
+			
 			$params['from'] = ($MODEL['p']-1) * $MODEL['elPP'];
 			$params['count'] = $MODEL['elPP'];
 			$MODEL['list'] = ScheduleEntry::getList($params);
@@ -110,7 +113,7 @@ class ScheduleController extends MainController{
 		Startup::execute(Startup::ADMIN);
 		$CORE->setLayout(null);
 
-		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
+		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR | Role::DOCTOR) )
 		{
 			vd($_REQUEST);
 			if($_REQUEST['scheduleEntryId'])
@@ -177,11 +180,35 @@ class ScheduleController extends MainController{
 
 
 
+    function delete()
+    {
+        require(GLOBAL_VARS_SCRIPT_FILE_PATH);
+        Startup::execute(Startup::ADMIN);
+        $CORE->setLayout(null);
+
+        if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR | Role::SUPER_ADMIN))
+        {
+            if($_REQUEST['id'])
+            {
+
+                $entry = ScheduleEntry::get($_REQUEST['id']);
+                if($entry)
+                {
+                    ScheduleEntry::delete($entry->id);
+                }
+            }
+
+        }
+
+//        Core::renderView('schedule/edit.php', $MODEL);
+    }
 
 
-	
-	
-	
+
+
+
+
+
 }
 
 

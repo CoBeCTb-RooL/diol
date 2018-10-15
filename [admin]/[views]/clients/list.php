@@ -39,11 +39,41 @@ $i=0;
 
 
 <div class="filters">
-    <div class="section user-id">
-        <h1>Телефон:</h1>
-        <input type="text" name="phone" value="<?=$params['phone']?>" style="width: 100px;" />
-        <input type="button" value="найти" onclick="opts.phone=$('.filters input[name=phone]').val(); opts.p=1;  window.parent.list(); return false; " />&nbsp;<input type="button" value="&times;" onclick="opts.phone=''; opts.p=1; window.parent.list(); return false; " />
-    </div>
+
+    <form action="" onsubmit="opts.phone=$('.filters input[name=phone]').val(); opts.p=1;  window.parent.list(); return false; ">
+        <div class="section user-id">
+            <h1>Телефон:</h1>
+            <input type="text" name="phone" value="<?=$params['phone']?>" style="width: 100px;" />
+
+            <input type="submit" value="найти" onclick="" />&nbsp;
+            <input type="button" value="&times;" onclick="opts.phone=''; opts.p=1; window.parent.list(); return false; " />
+        </div>
+    </form>
+
+
+
+    <form action="" onsubmit="
+                            opts.surname=$('.filters input[name=surname]').val();
+                            opts.name=$('.filters input[name=name]').val();
+                            opts.fathername=$('.filters input[name=name]').val();
+                            opts.p=1;
+                            window.parent.list();
+                            return false;
+    ">
+        <div class="section user-id">
+            <h1>ФИО:</h1>
+            <input type="text" name="surname" value="<?=$params['surnameLike']?>" style="width: 100px;" placeholder="Фамилия" />
+            <input type="text" name="name" value="<?=$params['nameLike']?>" style="width: 100px;"  placeholder="Имя" />
+            <input type="text" name="fathername" value="<?=$params['fatherNameLike']?>" style="width: 100px;" placeholder="Отчество"  />
+
+
+            <input type="submit" value="найти"  />&nbsp;
+            <input type="button" value="&times;" onclick="opts.surname=''; opts.name=''; opts.fathername=''; opts.p=1; window.parent.list(); return false; " />
+        </div>
+    </form>
+
+
+
 <!--    <div class="section user-id">-->
 <!--        <h1>Email:</h1>-->
 <!--        <input type="text" name="email" value="--><?//=$params['email']?><!--" style="width: 100px;" />-->

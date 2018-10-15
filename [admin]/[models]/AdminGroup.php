@@ -9,8 +9,9 @@ class AdminGroup
 
 			
 	const TBL = 'slonne__admin_groups';
-	
-	
+	const DOCTOR_GROUP_ID = 17;
+	const ADMIN_GROUP_ID = 11;
+
 	
 	
 	function init($arr)

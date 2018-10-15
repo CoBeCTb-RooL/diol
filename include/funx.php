@@ -194,6 +194,26 @@ function getOnclick($page, $onclick)
 
 
 
+function formatPhone($p)
+{
+    //vd($p);
+    $ret='+' . mb_substr($p, 0, 1) . ' ('.mb_substr($p, 1, 3).') ' . mb_substr($p, 4, 3).'-'.mb_substr($p, 7, 2) . '-'.mb_substr($p, 9, 2);
+
+    return $ret;
+}
+
+
+
+
+function clearPhone($p)
+{
+    $ret = str_replace([' ', '(', ')', '+', '-'], '', $p);
+
+    return $ret;
+}
+
+
+
 
 
 ?>

@@ -64,8 +64,8 @@ function showTimers(){
 		
 		<span style="padding: 0 7px 0 3px; "><b class="name"><?=$ADMIN->name?></b> (<?=$ADMIN->email?> | <b><?=$ADMIN->group->name?></b>)</span>
 		
-		<a href="/index" target="_blank">Сайт</a>
-		<a href="/<?=ADMIN_URL_SIGN?>" target="_blank">Админка</a>
+<!--		<a href="/index" target="_blank">Сайт</a>-->
+<!--		<a href="/--><?//=ADMIN_URL_SIGN?><!--" target="_blank">Админка</a>-->
 		<!-- <a href="#timers" onclick="$('#timers').slideToggle('fast'); return false; "><i class="fa fa-clock-o"></i> время загрузки</a> -->
 		<a href="#" onclick="$('#core-info').slideToggle('fast'); return false; ">core info</a>
 		<a href="#timers" onclick="showTimers(); return false; "><i class="fa fa-clock-o"></i> время загрузки</a>

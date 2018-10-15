@@ -49,11 +49,13 @@ class Admin
 	
 	
 	
-	function getList($status, $statusesNotIn)
+	function getList($status, $statusesNotIn, $groupId=null)
 	{
 		$sql="SELECT * FROM `".self::TBL."` WHERE 1 ";
-		if($status)
-			$sql.=" AND status='".intval($status->num)."' ";
+        if($status)
+            $sql.=" AND status='".intval($status->num)."' ";
+        if($groupId)
+            $sql.=" AND groupId='".intval($groupId)."' ";
 		if($statusesNotIn)
 		{
 			$sql.=" AND status NOT IN(-1 ";
@@ -195,6 +197,17 @@ class Admin
 	{
 		return $_SESSION['admin']['id'] ? true : false;
 	}
+
+
+    function isDoctor()
+    {
+        return $this->groupId == AdminGroup::DOCTOR_GROUP_ID;
+    }
+
+    function isOperator()
+    {
+        return $this->groupId == AdminGroup::ADMIN_GROUP_ID;
+    }
 	
 	
 	
@@ -283,7 +296,7 @@ class Admin
 		foreach ($tmp as $v)
 		{
 			$v->initGroup();
-			if($v->hasRole(Role::DOCTOR) && $v->status->code == Status::ACTIVE && $v->id!=7)
+			if($v->hasRole(Role::DOCTOR) && $v->status->code == Status::ACTIVE && $v->groupId == AdminGroup::DOCTOR_GROUP_ID)
 				$doctors[] = $v;
 		}
 		$ret = $doctors;
