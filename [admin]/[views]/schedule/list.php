@@ -31,7 +31,8 @@ $doctors = $MODEL['doctors'];
 	
 	.statuses{}
 	.statuses .item{ margin: 0 0 3px 0; }
-	
+
+    .past{text-decoration: line-through; opacity: .5;  }
 	.unit-status-<?=Status::ACTIVE?>{}
 	.unit-status-<?=Status::INACTIVE?>{opacity: .3; }
 	.unit-item{padding: 0 0 1px 0;}
@@ -58,7 +59,7 @@ $doctors = $MODEL['doctors'];
     <div class="section user-id">
         <h1>Дата:</h1>
         <a href="#" onclick="setDate('<?=date('Y-m-d', strtotime($params['date'])-3600*24)?>'); list1();  return false; ">&larr;пред.</a>
-        &nbsp;<input type="text" id="filterDate" value="<?=$params['date']?>" onkeyup="setDate($(this).val());  list1();"  onchange=" opts.date=$(this).val(); editOpts.date=$(this).val(); list1();  " style="width: 60px;" />
+        &nbsp;<input type="text" id="filterDate" value="<?=$params['date']?>" onkeyup="setDate($(this).val());  list1();"  onchange=" opts.date=$(this).val(); editOpts.date=$(this).val(); list1();  " style="width: 67px;" />
         <img id="filterDate-calendar-btn" src="/js/calendar/calendar.jpg" style="border:0px;">
         <script>
             Calendar.setup({
@@ -101,12 +102,15 @@ $doctors = $MODEL['doctors'];
     <?
     foreach ($listByTimes as $time=>$entries)
     {
+//        vd($params['date'].' '.$time);
+//        vd(date('Y-m-d H:i') );
+
         $zeroZero = false;
         if(strpos($time, ':00')!==false)
             $zeroZero = true;
         ?>
-        <tr style="height: 50px; <?=($zeroZero ? 'border-top: 2px solid #000 !important; ' : '')?>">
-            <td style="width: 1px;  font-size: 15px; font-weight: normal;  "><?=$time?></td>
+        <tr style="height: 50px; <?=($zeroZero ? 'border-top: 2px solid #000 !important; ' : '')?>" >
+            <td style="width: 1px;  font-size: 15px; font-weight: normal;  " class="<?= ($params['date'].' '.$time) < date('Y-m-d H:i') ?'past':''?>"><?=$time?></td>
             <td style="width: 1px; "><button onclick="editOpts.time = '<?=$time?>'; edit();  return false; ">+</button></td>
             <td>
                 <?

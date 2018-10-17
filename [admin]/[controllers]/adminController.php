@@ -38,7 +38,7 @@ class AdminController extends MainController{
 		if($ADMIN->hasRole(Role::ADMINS_MODERATOR) )
 		{
 
-			$MODEL['list'] = Admin::getList(null, $statusesNotIn=array(Status::code(Status::DELETED)), ($ADMIN->isOperator() ? AdminGroup::DOCTOR_GROUP_ID : null));
+			$MODEL['list'] = Admin::getList(null, $statusesNotIn=array(Status::code(Status::DELETED)), ($ADMIN->isOperator() ? AdminGroup::DOCTOR_GROUP_ID : null), ($ADMIN->isAdministrator() ? 1 : null));
 			foreach($MODEL['list'] as $key=>$val)
 				$val->initGroup();
 		}

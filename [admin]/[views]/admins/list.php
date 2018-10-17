@@ -35,10 +35,12 @@ if(count($list) )
 			<th>Специалист</th>
 			<th>E-mail</th>
 
+            <th>Группа</th>
+
             <?
-            if(!$ADMIN->isOperator())
+            if(! $ADMIN->isOperator() && !$ADMIN->isAdministrator())
             {?>
-			<th>Группа</th>
+
 			<th>Удалить</th>
             <?
             }?>
@@ -58,10 +60,6 @@ if(count($list) )
 				<td ><?=$item->email?></td>
 
 
-
-                <?
-                if(!$ADMIN->isOperator())
-                {?>
                 <td class="group group-status-<?=$item->group->status->code?>" >
                     <?php
                     if($item->group)
@@ -76,6 +74,12 @@ if(count($list) )
                         <?php
                     }?>
                 </td>
+
+
+                <?
+                if(!$ADMIN->isOperator() && !$ADMIN->isAdministrator())
+                {?>
+
 				<td><a href="#" onclick="if(confirm('Удалить администратора?')){adminsDelete(<?=$item->id?>)}" style="color: red; font-size: 10px; ">&times; удалить</a></td>
                 <?
                 }?>
@@ -85,8 +89,12 @@ if(count($list) )
 	</table>
 	
 
-	
-	<input id="add-btn" type="button" onclick="adminsEdit(); " value="Добавить врача">
+	<?
+    if(!$ADMIN->isOperator() || 1)
+    {?>
+    <input id="add-btn" type="button" onclick="adminsEdit(); " value="Добавить врача">
+    <?
+    }?>
 <?php
 }
 else

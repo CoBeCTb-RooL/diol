@@ -46,7 +46,7 @@ if(!$error)
 				
 					<?php	
 					//vd($e);
-					if($ADMIN->hasPrivilege($_GLOBALS['CURRENT_MODULE']->id, 'set_untouchability'))
+					if($ADMIN->hasPrivilege($_GLOBALS['CURRENT_MODULE']->id, 'set_untouchability') && 0)
 					{?>
 					<div class="field-wrapper">
 						<span class="label" style="font-size: 1.3em;">Неприкосновенен: </span>

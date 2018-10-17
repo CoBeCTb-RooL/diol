@@ -49,13 +49,15 @@ class Admin
 	
 	
 	
-	function getList($status, $statusesNotIn, $groupId=null)
+	function getList($status, $statusesNotIn, $groupId=null, $groupIdToHide = null)
 	{
 		$sql="SELECT * FROM `".self::TBL."` WHERE 1 ";
         if($status)
             $sql.=" AND status='".intval($status->num)."' ";
         if($groupId)
             $sql.=" AND groupId='".intval($groupId)."' ";
+        if($groupIdToHide)
+            $sql.=" AND groupId!='".intval($groupIdToHide)."' ";
 		if($statusesNotIn)
 		{
 			$sql.=" AND status NOT IN(-1 ";
@@ -206,8 +208,15 @@ class Admin
 
     function isOperator()
     {
+        return $this->groupId == AdminGroup::OPERATOR_GROUP_ID;
+    }
+
+    function isAdministrator()
+    {
         return $this->groupId == AdminGroup::ADMIN_GROUP_ID;
     }
+
+
 	
 	
 	

@@ -105,7 +105,7 @@ elseif(strpos($uri, '/'.ADMIN_URL_SIGN) === 0)
 
 			
 			<?php 
-			if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::SYSTEM_ADMINISTRATOR | Role::ADMIN_GROUPS_MODERATOR | Role::ADMINS_MODERATOR)  && !$ADMIN->isOperator() )
+			if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::SYSTEM_ADMINISTRATOR | Role::ADMIN_GROUPS_MODERATOR | Role::ADMINS_MODERATOR)  && !$ADMIN->isOperator() && !$ADMIN->isAdministrator() )
 			{?>
 			<li>
 				<a class="<?=$section=='system' ? 'active' : ''?>" href="#"><i class="fa fa-cubes"></i> Системные</a>

@@ -97,7 +97,7 @@ function adminsDelete(id)
 
 
 
-<h1><?=$_GLOBALS['CURRENT_MODULE']->icon?> Администраторы</h1>
+<h1><?=$_GLOBALS['CURRENT_MODULE']->icon?> Врачи</h1>
 
 
 
