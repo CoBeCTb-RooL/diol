@@ -65,8 +65,14 @@ if(count($list) )
                     if($item->group)
                     {?>
                         <?=$item->group->name?> <span class="hint">(<?=$item->group->status->name?>)</span>
+                        <?
+                        if(!$ADMIN->isOperator() && !$ADMIN->isAdministrator())
+                        {?>
                         <a href="<?=$item->group->adminUrl()?>" target="_blank" style="font-weight: normal; display: block; font-size: 9px;  ">смотреть</a>
-                        <?php
+                        <?
+                        }?>
+
+                    <?php
                     }
                     else
                     {?>

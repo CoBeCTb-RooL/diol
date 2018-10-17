@@ -109,7 +109,20 @@ class AdminController extends MainController{
 		if($ADMIN->hasRole(Role::ADMINS_MODERATOR) )
 		{
 			$MODEL['admin'] = Admin::get($_REQUEST['id']);
-			$MODEL['groups'] = AdminGroup::getList('', $statusesNotIn=array(Status::code(Status::DELETED)));
+
+			$allowedGroups = null;
+			if($ADMIN->isAdministrator())
+			    $allowedGroups = [AdminGroup::ADMIN_GROUP_ID, AdminGroup::OPERATOR_GROUP_ID, AdminGroup::DOCTOR_GROUP_ID, ];
+			if($ADMIN->isOperator())
+                $allowedGroups = [AdminGroup::DOCTOR_GROUP_ID, ];
+			$tmp = AdminGroup::getList('', $statusesNotIn=array(Status::code(Status::DELETED)));
+			foreach($tmp as $val)
+            {
+//                vd($val);
+                if(!$allowedGroups || in_array($val->id, $allowedGroups))
+                    $MODEL['groups'][] = $val;
+            }
+//            $MODEL['groups'] = $tmp;
 		}
 		else
 			$MODEL['error'] = Error::NO_ACCESS_ERROR;
