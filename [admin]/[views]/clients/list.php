@@ -96,6 +96,7 @@ if(count($list))
 			<th>Телефон</th>
 			<th>Адрес</th>
 
+<!--			<th></th>-->
 			<th></th>
 
 		</tr>
@@ -111,11 +112,12 @@ if(count($list))
 				<a href="#" id="status-switcher-<?=$client->id?>" onclick="switchStatus(<?=$client->id?>); return false; " ><?=$client->status->icon?></a>
 			</td>
 			<td width="1" class="id"><?=$client->id?></td>
-			<td class="name"><b><?=$client->fio()?></b></td>
+			<td class="name"><a href="#" onclick="view(<?=$client->id?>); return false; " style="font-size: 14px; font-weight: normal;  "><?=$client->fio()?></a></td>
 			<td class="name"><?=$client->phone?></td>
 			<td class="name"><?=$client->address?></td>
 
-			<td><a href="#" onclick="edit(<?=$client->id?>)">ред.</a></td>
+			<!--<td><a href="#" onclick="view(<?=$client->id?>); return false; ">смотреть</a></td>-->
+			<td><a href="#" onclick="edit(<?=$client->id?>); return false; ">ред.</a></td>
 		</tr>
 	<?php 
 	}?>

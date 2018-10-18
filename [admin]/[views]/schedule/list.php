@@ -38,10 +38,10 @@ $doctors = $MODEL['doctors'];
 	.unit-item{padding: 0 0 1px 0;}
 
     .client{ width: 220px; }
-    .phone{font-size: .9em; color: #777; font-style: italic; }
+    .phone{font-size: .9em; color: #555; font-style: italic; padding: 3px 0 5px  0px; letter-spacing: 1px;   }
     .service{font-weight: bold !important; width: 150px; font-size: 1.1em;   }
 
-    .entry{border: 1px solid #c9c900; background: #eaff8b !important; font-size: 1.4em !important; margin: 0 0 3px 0; }
+    .entry{border: 1px solid #c9c900; background: #eaff8b !important; font-size: 1.1em !important; margin: 0 0 3px 0; }
     .entry:hover{background: #eaff8b !important; }
     .entry-info-tbl{}
     .entry-info-tbl td{border: none; }
@@ -59,7 +59,7 @@ $doctors = $MODEL['doctors'];
     <div class="section user-id">
         <h1>Дата:</h1>
         <a href="#" onclick="setDate('<?=date('Y-m-d', strtotime($params['date'])-3600*24)?>'); list1();  return false; ">&larr;пред.</a>
-        &nbsp;<input type="text" id="filterDate" value="<?=$params['date']?>" onkeyup="setDate($(this).val());  list1();"  onchange=" opts.date=$(this).val(); editOpts.date=$(this).val(); list1();  " style="width: 67px;" />
+        &nbsp;<input type="text" id="filterDate" value="<?=$params['date']?>" onkeyup="setDate($(this).val());  list1();"  onchange=" opts.date=$(this).val(); editOpts.date=$(this).val(); list1();  " style="width: 87px;" />
         <img id="filterDate-calendar-btn" src="/js/calendar/calendar.jpg" style="border:0px;">
         <script>
             Calendar.setup({
@@ -98,7 +98,9 @@ $doctors = $MODEL['doctors'];
 </div>
 
 
-<table border="1" class="t" style="width: 700px; font-family: 'Open Sans1', Tahoma; ">
+<h1><?=Funx::mkDate($params['date'])?> <?=$params['date'] == date('Y-m-d') ? '(сегодня)' : ''?></h1>
+
+<table border="1" class="t" style="width: 900px; font-family: 'Open Sans1', Tahoma; ">
     <?
     foreach ($listByTimes as $time=>$entries)
     {
@@ -121,15 +123,15 @@ $doctors = $MODEL['doctors'];
                         <div class="entry">
                             <table class="entry-info-tbl" cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%;  ">
                                 <tr>
-                                    <td class="client" >
+                                    <td class="client" style="width: 450px; border: 0px solid red; ">
+                                        Клиент: <b><?=$entry->client->fio()?></b>
+                                        <div class="phone">тел.: <?=$entry->client->phone?></div>
                                         <div class="service"><?=$entry->service->name?></div>
-                                        <?=$entry->client->fio()?>
-                                        <div class="phone"><?=$entry->client->phone?></div>
                                     </td>
     <!--                                <td class="service">-->
     <!--                                    --><?//=$entry->service->name?>
     <!--                                </td>-->
-                                    <td>Врач: <?=$entry->doctor->name?></td>
+                                    <td style="width: 550px; border: 0px solid red; font-size: .9em; ">Врач: <b><?=$entry->doctor->name?></b></td>
                                     <td class="btns">
                                         <?
                                         if(!$ADMIN->isDoctor())

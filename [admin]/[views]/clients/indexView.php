@@ -19,26 +19,26 @@
 			error: function(e){}
 
 		});
-	} 
-
-
-
-	function edit(id)
-	{
-		$.fancybox.showLoading()
-		
-		$.ajax({
-			url: '/<?=ADMIN_URL_SIGN?>/clients/edit',
-			data: 'id='+id+'',
-			beforeSend: function(){$.fancybox.showLoading()},
-			success: function(data){
-				$('#float').html(data)
-				$.fancybox('#float');
-			},
-			error: function(e){alert('Возникла ошибка на сервере... Попробуйте позже.')},
-			complete: function(){$.fancybox.hideLoading()}
-		});
 	}
+
+
+
+    function edit(id)
+    {
+        $.fancybox.showLoading()
+
+        $.ajax({
+            url: '/<?=ADMIN_URL_SIGN?>/clients/edit',
+            data: 'id='+id+'',
+            beforeSend: function(){$.fancybox.showLoading()},
+            success: function(data){
+                $('#float').html(data)
+                $.fancybox('#float');
+            },
+            error: function(e){alert('Возникла ошибка на сервере... Попробуйте позже.')},
+            complete: function(){$.fancybox.hideLoading()}
+        });
+    }
 
 
 	function editSubmitStart()
@@ -57,6 +57,28 @@
 		else
 			showErrors(data.errors)
 	}
+
+
+
+    function view(id)
+    {
+        $.fancybox.showLoading()
+
+        $.ajax({
+            url: '/<?=ADMIN_URL_SIGN?>/clients/view',
+            data: 'id='+id+'',
+            beforeSend: function(){$.fancybox.showLoading()},
+            success: function(data){
+                $('#float').html(data)
+                $.fancybox('#float');
+            },
+            error: function(e){alert('Возникла ошибка на сервере... Попробуйте позже.')},
+            complete: function(){$.fancybox.hideLoading()}
+        });
+    }
+
+
+
 
 
 	/*function listSubmitStart()

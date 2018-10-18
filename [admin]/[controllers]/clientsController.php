@@ -94,25 +94,25 @@ class ClientsController extends MainController{
 	
 			echo json_encode($json);
 	}
-	
-	
-	function edit()
-	{
-		require(GLOBAL_VARS_SCRIPT_FILE_PATH);
-		Startup::execute(Startup::ADMIN);
-		$CORE->setLayout(null);
-	
-		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR))
-		{
-			$MODEL['item'] = Client::get($_REQUEST['id']);
-			if($MODEL['item'])
-				$MODEL['item']->initMedia();
-		}
-		else
-			$MODEL['error'] = Error::NO_ACCESS_ERROR;
-	
-		Core::renderView('clients/edit.php', $MODEL);
-	}
+
+
+    function edit()
+    {
+        require(GLOBAL_VARS_SCRIPT_FILE_PATH);
+        Startup::execute(Startup::ADMIN);
+        $CORE->setLayout(null);
+
+        if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR))
+        {
+            $MODEL['item'] = Client::get($_REQUEST['id']);
+            if($MODEL['item'])
+                $MODEL['item']->initMedia();
+        }
+        else
+            $MODEL['error'] = Error::NO_ACCESS_ERROR;
+
+        Core::renderView('clients/edit.php', $MODEL);
+    }
 	
 	
 	
@@ -221,6 +221,30 @@ class ClientsController extends MainController{
 	
 			echo '<script>window.top.listSubmitComplete('.json_encode($json).')</script>';
 	}
+
+
+
+    function view()
+    {
+        require(GLOBAL_VARS_SCRIPT_FILE_PATH);
+        Startup::execute(Startup::ADMIN);
+        $CORE->setLayout(null);
+
+        if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) || 1)
+        {
+            $MODEL['item'] = Client::get($_REQUEST['id']);
+            if($MODEL['item'])
+            {
+                $MODEL['item']->initMedia();
+            }
+            else
+                $MODEL['error'] = 'Клиент не найден. ['.$_REQUEST['id'].']';
+        }
+        else
+            $MODEL['error'] = Error::NO_ACCESS_ERROR;
+
+        Core::renderView('clients/view.php', $MODEL);
+    }
 	
 	
 	
