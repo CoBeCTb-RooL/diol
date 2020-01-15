@@ -98,7 +98,7 @@ elseif($editOpts['doctorId'])
 			    <?=Service::drawTreeSelect2($MODEL['services'], 0, $item->serviceId)?>
             </select>
             &nbsp;&nbsp;
-            Цена<span class="required">*</span>: <input type="text" name="price" value="<?=$item->price?>"  />
+            Цена: <input type="text" name="price" value="<?=$item->price?>"  />
 		</span>
         <div class="clear"></div>
     </div>

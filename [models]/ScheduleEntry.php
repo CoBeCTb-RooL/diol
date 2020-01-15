@@ -313,8 +313,8 @@ class ScheduleEntry{
 			$problems[] = Slonne::setError('serviceId', 'Укажите процедуру');
 		if(!trim($this->dt))
 			$problems[] = Slonne::setError('dt', 'Укажите дату записи');
-		if(!trim($this->price))
-			$problems[] = Slonne::setError('price', 'Укажите стоимость');
+//		if(!trim($this->price))
+//			$problems[] = Slonne::setError('price', 'Укажите стоимость');
 
 		
 		return $problems;
