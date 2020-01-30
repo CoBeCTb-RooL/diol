@@ -38,7 +38,7 @@ class ScheduleController extends MainController{
 			//vd($_REQUEST);
 			$params = $_REQUEST;
 			$MODEL['p'] = $_REQUEST['p'] ? $_REQUEST['p'] : 1;
-			$MODEL['elPP'] = $_REQUEST['elPP'] ? $_REQUEST['elPP'] : 10;
+			$MODEL['elPP'] = $_REQUEST['elPP'] ? $_REQUEST['elPP'] : 999999;
 
 			$MODEL['totalCount'] = ScheduleEntry::getCount($params);
 
@@ -47,7 +47,8 @@ class ScheduleController extends MainController{
 			
 			$params['from'] = ($MODEL['p']-1) * $MODEL['elPP'];
 			$params['count'] = $MODEL['elPP'];
-			$MODEL['list'] = ScheduleEntry::getList($params);
+            $MODEL['list'] = ScheduleEntry::getList($params);
+//            vd($MODEL['list']);
 			$MODEL['params'] = $params;
 
 			$listByTimes = array_flip(ScheduleEntry::timeArr());

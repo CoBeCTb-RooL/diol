@@ -77,23 +77,17 @@ $doctors = $MODEL['doctors'];
     </div>
 
 
-    <?
-    if(!$ADMIN->isDoctor())
-    {?>
+    <?if(!$ADMIN->isDoctor()):?>
     <div class="section user-id">
         <h1>Врач:</h1>
         <select onchange="opts.doctorId=$(this).val(); list1(); ">
             <option value="">-все-</option>
-            <?
-            foreach ($doctors as $doctor) {
-                ?>
-                <option value="<?= $doctor->id ?>" <?= ($params['doctorId'] == $doctor->id) ? ' selected ' : '' ?>><?= $doctor->name ?></option>
-                <?
-            } ?>
+            <?foreach ($doctors as $doctor) :?>
+            <option value="<?= $doctor->id ?>" <?= ($params['doctorId'] == $doctor->id) ? ' selected ' : '' ?>><?= $doctor->name ?></option>
+            <?endforeach;?>
         </select>
     </div>
-    <?
-    }?>
+    <?endif;?>
 
 </div>
 
@@ -101,29 +95,22 @@ $doctors = $MODEL['doctors'];
 <h1><?=Funx::mkDate($params['date'])?> <?=$params['date'] == date('Y-m-d') ? '(сегодня)' : ''?></h1>
 
 <table border="1" class="t" style="width: 900px; font-family: 'Open Sans1', Tahoma; ">
+    <?foreach ($listByTimes as $time=>$entries):?>
     <?
-    foreach ($listByTimes as $time=>$entries)
-    {
-//        vd($params['date'].' '.$time);
-//        vd(date('Y-m-d H:i') );
-
-        $zeroZero = false;
-        if(strpos($time, ':00')!==false)
-            $zeroZero = true;
-        ?>
+    $zeroZero = false;
+    if(strpos($time, ':00')!==false)
+        $zeroZero = true;
+    ?>
         <tr style="height: 50px; <?=($zeroZero ? 'border-top: 2px solid #000 !important; ' : '')?>" >
             <td style="width: 1px;  font-size: 15px; font-weight: normal;  " class="<?= ($params['date'].' '.$time) < date('Y-m-d H:i') ?'past':''?>"><?=$time?></td>
             <td style="width: 1px; "><button onclick="editOpts.time = '<?=$time?>'; edit();  return false; ">+</button></td>
             <td>
-                <?
-                if(count($entries))
-                {
-                    foreach ($entries as $entry)
-                    {?>
+                <?if(count($entries)):?>
+                    <?foreach ($entries as $entry):?>
                         <div class="entry">
                             <table class="entry-info-tbl" cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%;  ">
                                 <tr>
-                                    <td class="client" style="width: 450px; border: 0px solid red; ">
+                                    <td class="client" style="width: 450px; border: 0px solid red; "><?=$entry->id?>.
                                         Клиент: <b><?=$entry->client->fio()?></b>
                                         <div class="phone">тел.: <?=$entry->client->phone?></div>
                                         <div class="service"><?=$entry->service->name?></div>
@@ -133,31 +120,23 @@ $doctors = $MODEL['doctors'];
     <!--                                </td>-->
                                     <td style="width: 550px; border: 0px solid red; font-size: .9em; ">Врач: <b><?=$entry->doctor->name?></b></td>
                                     <td class="btns">
-                                        <?
-                                        if(!$ADMIN->isDoctor())
-                                        {?>
+                                    <?if(!$ADMIN->isDoctor()):?>
                                         <nobr>
                                             <a href="#" onclick="edit(<?=$entry->id?>)">ред.</a>&nbsp;&nbsp;&nbsp;
                                             <a style="color: red; " href="#" onclick="del(<?=$entry->id?>)">удалить</a>
                                         </nobr>
-                                        <?
-                                        }?>
+                                    <?endif;?>
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                    <?
-                    }
-				}
-				else
-                {?>
-                    <span style="font-size: 1em; font-style: italic; color: #777; ">-записей нет-</span>
-                <?
-                }?>
+                    <?endforeach;?>
+				<?else:?>
+                <span style="font-size: 1em; font-style: italic; color: #777; ">-записей нет-</span>
+                <?endif;?>
             </td>
         </tr>
-    <?
-    }?>
+    <?endforeach;?>
 </table>
 
 

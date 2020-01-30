@@ -265,13 +265,43 @@ class Service{
 			$ret .= $s->name.'
 				</option>';
 
-			foreach ($children as $ch)
+//			foreach ($children as $ch)
 				$ret.=self::drawTreeSelect2($services, $s->id, $idToBeSelected,  ($level+1));
 		}
 
 		return $ret;
 	}
-	
+
+
+
+
+    function drawTreeSelect3($services, $pid=0,  $idToBeSelected, $level=0 )
+    {
+        foreach ($services as $item)
+        {
+            if($item->pid == $pid )
+            {
+                $ret.='<option value="'.$item->id.'" '.($item->id == $idToBeSelected ? ' selected ' : '').'>'.str_repeat('----|', $level).' '.$item->name.'</option>';
+
+                $ret .= self::drawTreeSelect3($services, $item->id, $idToBeSelected, $level+1);
+            }
+        }
+
+        return $ret;
+    }
+
+
+
+    public function getAllSubIds($id)
+    {
+        $ret = [$id];
+
+        $tmp = self::getList(['pid'=>$id]);
+        foreach ($tmp as $item)
+            $ret = array_merge($ret, self::getAllSubIds($item->id));
+
+        return $ret;
+    }
 	
 	
 	

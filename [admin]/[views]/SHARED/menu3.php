@@ -96,12 +96,19 @@ elseif(strpos($uri, '/'.ADMIN_URL_SIGN) === 0)
 			}?>
 
 
-			<?
-			if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::SYSTEM_ADMINISTRATOR))
-			{?>
+            <?
+            if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::SYSTEM_ADMINISTRATOR))
+            {?>
                 <li><a class="<?=$subsection=='admin' ? 'active' : ''?>" href="/<?=ADMIN_URL_SIGN?>/admin"><i class="fa fa-user"></i> Врачи</a></li>
-				<?
-			}?>
+                <?
+            }?>
+
+
+
+
+            <?if($ADMIN->hasRole(Role::SUPER_ADMIN | Role::SYSTEM_ADMINISTRATOR)):?>
+                <li><a class="<?=$subsection=='admin' ? 'active' : ''?>" href="/<?=ADMIN_URL_SIGN?>/stats"><i class="fa fa-chart"></i> Статистика</a></li>
+            <?endif?>
 
 			
 			<?php 

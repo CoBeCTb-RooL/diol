@@ -43,8 +43,9 @@ class ScheduleEntry{
 
 	function getList($params)
 	{
+//	    vd($params);
 		$sql="SELECT * FROM `".self::TBL."` WHERE 1 ".self::getListInnerSql($params);
-		//vd($sql);
+//		vd($sql);
 		$qr=DB::query($sql);
 		echo mysql_error();
 		while($next=mysql_fetch_array($qr, MYSQL_ASSOC))
