@@ -246,21 +246,34 @@ class Client{
 			echo mysql_error(); 
 		}
 	}
-	
-	
-	
-	function initMedia()
-	{
-		$arr = [];
 
-		$arr = Media2::getList([
-			'objType'=>Object::CLIENT,
-			'objId' =>$this->id,
-			'orderBy' => 'idx',
-		]);
 
-		$this->media = $arr;
-	}
+
+    function initMedia()
+    {
+        $arr = [];
+
+        $arr = Media2::getList([
+            'objType'=>Object::CLIENT,
+            'objId' =>$this->id,
+            'orderBy' => 'idx',
+        ]);
+
+        $this->media = $arr;
+    }
+
+
+    function initReminders()
+    {
+        $arr = [];
+
+        $arr = Reminder::getList([
+            'clientId'=>$this->id,
+            'orderBy' => 'dt desc',
+        ]);
+
+        $this->reminders = $arr;
+    }
 	
 	
 	

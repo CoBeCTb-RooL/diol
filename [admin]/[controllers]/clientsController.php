@@ -236,6 +236,7 @@ class ClientsController extends MainController{
             if($MODEL['item'])
             {
                 $MODEL['item']->initMedia();
+//                $MODEL['item']->initReminders();
             }
             else
                 $MODEL['error'] = 'Клиент не найден. ['.$_REQUEST['id'].']';
@@ -350,32 +351,152 @@ class ClientsController extends MainController{
 
 
 
-	function deleteMedia()
-	{
-		require(GLOBAL_VARS_SCRIPT_FILE_PATH);
-		Startup::execute(Startup::ADMIN);
-		$CORE->setLayout(null);
+    function deleteMedia()
+    {
+        require(GLOBAL_VARS_SCRIPT_FILE_PATH);
+        Startup::execute(Startup::ADMIN);
+        $CORE->setLayout(null);
 
-		$errors = null;
+        $errors = null;
 
-		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
-		{
-			$media = Media2::get($_REQUEST['id']);
-			if($media)
-			{
-				$media->delete();
-			}
-			else
-				$errors[] = new Error('ОШИБКА! Медиа не найдено.');
-		}
-		else
-			$errors[] = new Error(Error::NO_ACCESS_ERROR);
+        if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
+        {
+            $media = Media2::get($_REQUEST['id']);
+            if($media)
+            {
+                $media->delete();
+            }
+            else
+                $errors[] = new Error('ОШИБКА! Медиа не найдено.');
+        }
+        else
+            $errors[] = new Error(Error::NO_ACCESS_ERROR);
 
-		$json['errors'] = $errors;
+        $json['errors'] = $errors;
 
-		echo json_encode($json);
-	}
-	
+        echo json_encode($json);
+    }
+
+
+
+
+    function clientRemindersList()
+    {
+        require(GLOBAL_VARS_SCRIPT_FILE_PATH);
+        Startup::execute(Startup::ADMIN);
+        $CORE->setLayout(null);
+
+        $errors = null;
+
+        if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR | Role::SUPER_ADMIN ) )
+        {
+            $params = [
+                'orderBy' => 'dt asc',
+            ];
+            if($_REQUEST['clientId'])
+                $params['clientId'] = $_REQUEST['clientId'];
+            $MODEL['list'] = Reminder::getList($params);
+        }
+        else
+            $errors[] = new Error(Error::NO_ACCESS_ERROR);
+
+        $MODEL['errors'] = $errors;
+
+        Core::renderView('clients/remindersListPartial.php', $MODEL);
+    }
+
+
+    function clientsReminderSave()
+    {
+        require(GLOBAL_VARS_SCRIPT_FILE_PATH);
+        Startup::execute(Startup::ADMIN);
+        $CORE->setLayout(null);
+
+        $errors = null;
+
+        if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
+        {
+//            vd($_REQUEST);
+            if($_REQUEST['id'])
+                $item = Reminder::get($_REQUEST['id']);
+            else
+                $item = new Reminder();
+
+            $item->setData($_REQUEST);
+//            vd($item);
+
+            $errors = $item->validate();
+            if(!count($errors))
+            {
+                if($item->id)
+                    $item->update();
+                else
+                {
+                    $item->status = Status::code(Status::ACTIVE)->num;
+                    $item->id = $item->insert();
+                }
+            }
+        }
+        else
+            $errors[] = new Error(Error::NO_ACCESS_ERROR);
+
+        $json['errors'] = $errors;
+
+        echo json_encode($json);
+    }
+
+
+
+    function clientReminderDelete()
+    {
+        require(GLOBAL_VARS_SCRIPT_FILE_PATH);
+        Startup::execute(Startup::ADMIN);
+        $CORE->setLayout(null);
+
+        if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR | Role::SUPER_ADMIN))
+        {
+            if($_REQUEST['id'])
+            {
+
+                $entry = Reminder::get($_REQUEST['id']);
+                if($entry)
+                {
+                    Reminder::delete($entry->id);
+                }
+            }
+
+        }
+
+    }
+
+
+
+    function clientReminderJson()
+    {
+        require(GLOBAL_VARS_SCRIPT_FILE_PATH);
+        Startup::execute(Startup::ADMIN);
+        $CORE->setLayout(null);
+
+        $errors = null;
+
+        if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
+        {
+            $item = Reminder::get($_REQUEST['id']);
+            if($item)
+            {
+                echo json_encode($item);
+                die;
+            }
+            else
+                $errors[] = new Error('ОШИБКА! Запись не найдено.');
+        }
+        else
+            $errors[] = new Error(Error::NO_ACCESS_ERROR);
+
+        $json['errors'] = $errors;
+
+        echo json_encode($json);
+    }
 	
 	
 }

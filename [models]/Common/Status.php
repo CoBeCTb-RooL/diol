@@ -49,9 +49,6 @@ class Status{
 	
 	function code($code)
 	{
-		/*foreach(self::$items as $key=>$val)
-			if($val->code == $code)
-				return $val;*/
 		return self::$items[$code];
 	}
 	

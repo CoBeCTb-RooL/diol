@@ -1,25 +1,15 @@
 <?php 
-class ScheduleEntry{
+class Reminder{
 	
-	const TBL = 'schedule';
+	const TBL = 'reminder';
 	
-	const URL_SIGN = 'category';
-
 	public $id;
 	public $clientId;
-	public $doctorId;
-	public $serviceId;
-	public $dt;
-	public $price;
-	public $comment;
-	public $dateCreated;
+    public $comment;
+    public $status;
+    public $dt;
+    public $dateCreated;
 	public $dateUpdated;
-
-
-
-	const TIME_FROM = 8;
-	const TIME_TILL = 20;
-	const MINUTES_STEP = 30;
 
 
 	function init($arr)
@@ -28,15 +18,11 @@ class ScheduleEntry{
 
 		$m->id = $arr['id'];
 		$m->clientId = $arr['clientId'];
-		$m->doctorId = $arr['doctorId'];
-		$m->serviceId = $arr['serviceId'];
-		$m->dt = $arr['dt'];
-		$m->price = $arr['price'];
-		$m->comment = $arr['comment'];
-		$m->createdAt = $arr['createdAtAt'];
-		$m->updatedAt= $arr['updatedAt'];
-		$m->statusId = $arr['status'];
-		$m->status = Status::num($m->statusId);
+        $m->comment = $arr['comment'];
+        $m->dt = $arr['dt'];
+        $m->status = Status::num($m->statusId);
+        $m->createdAt = $arr['createdAtAt'];
+        $m->updatedAt= $arr['updatedAt'];
 
 		return $m;
 	}
@@ -77,8 +63,6 @@ class ScheduleEntry{
 
 	
 	
-	
-	
 	function getListInnerSql($params)
 	{
 		//vd($params);
@@ -90,20 +74,15 @@ class ScheduleEntry{
 		if(isset($params['clientId']) && $params['clientId'])
 			$sql.=" AND clientId=".intval($params['clientId'])." ";
 
-		if(isset($params['serviceId']) && $params['serviceId'])
-			$sql.=" AND serviceId=".intval($params['serviceId'])." ";
-		if(isset($params['serviceIds']) && $params['serviceIds'])
-			$sql.=" AND serviceId IN(".$params['serviceIds'].") ";
-
-		if(isset($params['doctorId']) && $params['doctorId'])
-			$sql.=" AND doctorId=".intval($params['doctorId'])." ";
-
 		if(isset($params['date']) && $params['date'])
 			$sql.=" AND DATE(dt)='".strPrepare($params['date'])."' ";
 		if(isset($params['dateFrom']) && $params['dateFrom'])
 			$sql.=" AND DATE(dt)>='".strPrepare($params['dateFrom'])."' ";
 		if(isset($params['dateTo']) && $params['dateTo'])
 			$sql.=" AND DATE(dt)<='".strPrepare($params['dateTo'])."' ";
+
+        if(isset($params['orderBy']) && $params['orderBy'])
+            $sql.="order By ".strPrepare($params['orderBy'])."";
 
 
 		if(isset($params['from']) && isset($params['count']))
@@ -215,10 +194,7 @@ class ScheduleEntry{
 	{
 		$str.="
 		  `clientId`='".intval($this->clientId)."'
-		, `doctorId`='".intval($this->doctorId)."'
-		, `serviceId`='".intval($this->serviceId)."'
 		, `dt`='".strPrepare($this->dt)."'
-		, `price`='".floatval($this->price)."'
 		, `comment`='".strPrepare($this->comment)."'
 		
 		, `status` = '".intval($this->status->num)."'
@@ -233,10 +209,6 @@ class ScheduleEntry{
 	function setData($arr)
 	{
 		$this->clientId = intval($arr['clientId']);
-		$this->doctorId = intval($arr['doctorId']);
-		$this->serviceId = intval($arr['serviceId']);
-		$this->dt = strPrepare($arr['dt']);
-		$this->price = floatval($arr['price']);
 		$this->dt = trim($arr['date'].' '.trim($arr['time']));
 		$this->comment = strPrepare($arr['comment']);
 	}
@@ -276,15 +248,6 @@ class ScheduleEntry{
 		$this->client = Client::get($this->clientId);
 	}
 
-	function initService()
-	{
-		$this->service = Service::get($this->serviceId);
-	}
-
-	function initDoctor()
-	{
-		$this->doctor = Admin::get($this->doctorId);
-	}
 	
 	
 	function setIdx($id, $val)
@@ -299,23 +262,18 @@ class ScheduleEntry{
 	}
 	
 	
-	
 
-	
-	
 	
 	function validate()
 	{
 		if(!trim($this->clientId))
 			$problems[] = Slonne::setError('clientId', 'Укажите клиента');
-		if(!trim($this->doctorId))
-			$problems[] = Slonne::setError('doctorId', 'Укажите врача');
-		if(!trim($this->serviceId))
-			$problems[] = Slonne::setError('serviceId', 'Укажите процедуру');
+
+        if(!trim($this->comment))
+            $problems[] = Slonne::setError('comment', 'Укажите текст напоминания');
+
 		if(!trim($this->dt))
-			$problems[] = Slonne::setError('dt', 'Укажите дату записи');
-//		if(!trim($this->price))
-//			$problems[] = Slonne::setError('price', 'Укажите стоимость');
+			$problems[] = Slonne::setError('dt', 'Укажите дату');
 
 		
 		return $problems;
