@@ -20,7 +20,7 @@ class Reminder{
 		$m->clientId = $arr['clientId'];
         $m->comment = $arr['comment'];
         $m->dt = $arr['dt'];
-        $m->status = Status::num($m->statusId);
+        $m->status = Status::num($arr['status']);
         $m->createdAt = $arr['createdAtAt'];
         $m->updatedAt= $arr['updatedAt'];
 
@@ -69,17 +69,24 @@ class Reminder{
 		$sql="";
 
 		if(isset($params['status']) && $params['status'])
-			$sql.="AND status='".intval($params['status']->num)."";
+			$sql.="AND status='".intval($params['status']->num)."'";
 
 		if(isset($params['clientId']) && $params['clientId'])
 			$sql.=" AND clientId=".intval($params['clientId'])." ";
 
 		if(isset($params['date']) && $params['date'])
 			$sql.=" AND DATE(dt)='".strPrepare($params['date'])."' ";
-		if(isset($params['dateFrom']) && $params['dateFrom'])
-			$sql.=" AND DATE(dt)>='".strPrepare($params['dateFrom'])."' ";
-		if(isset($params['dateTo']) && $params['dateTo'])
-			$sql.=" AND DATE(dt)<='".strPrepare($params['dateTo'])."' ";
+        if(isset($params['dateFrom']) && $params['dateFrom'])
+            $sql.=" AND DATE(dt)>='".strPrepare($params['dateFrom'])."' ";
+        if(isset($params['dateTo']) && $params['dateTo'])
+            $sql.=" AND DATE(dt)<='".strPrepare($params['dateTo'])."' ";
+
+        if(isset($params['dateTimeFrom']) && $params['dateTimeFrom'])
+            $sql.=" AND dt>='".strPrepare($params['dateTimeFrom'])."' ";
+        if(isset($params['dateTimeTo']) && $params['dateTimeTo'])
+            $sql.=" AND dt<='".strPrepare($params['dateTimeTo'])."' ";
+
+
 
         if(isset($params['orderBy']) && $params['orderBy'])
             $sql.="order By ".strPrepare($params['orderBy'])."";
@@ -315,7 +322,20 @@ class Reminder{
 	{
 		return date('H:i', strtotime($this->dt));
 	}
-	
+
+
+
+	function datePeriods()
+    {
+        return [
+            'завтра' => date('Y-m-d 00:00:00', strtotime(date('Y-m-d H:i:s') . ' +1 day')),
+            'через неделю' => date('Y-m-d 00:00:00', strtotime(date('Y-m-d H:i:s') . ' +7 day')),
+            'через месяц' => date('Y-m-d 00:00:00', strtotime(date('Y-m-d H:i:s') . ' +1 month')),
+            'через 3 месяца' => date('Y-m-d 00:00:00', strtotime(date('Y-m-d H:i:s') . ' +3 month')),
+            'через полгода' => date('Y-m-d 00:00:00', strtotime(date('Y-m-d H:i:s') . ' +6 month')),
+            'через год' => date('Y-m-d 00:00:00', strtotime(date('Y-m-d H:i:s') . ' +1 year')),
+        ];
+    }
 
 	
 	

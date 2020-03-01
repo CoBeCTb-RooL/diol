@@ -153,7 +153,7 @@ a
 
 .content
 {
-
+	position: relative;
 	margin: 10px ; 
 	border: 0px solid red; 
 	 
@@ -162,6 +162,28 @@ a
 	padding: 10px 10px 30px 10px;  
 	
 }
+
+
+
+.notifier{ border: 0px solid red; position: absolute; bottom: 20px; right: 0px; max-width: 400px; padding: 0 10px;
+	.inner{border: 0px solid green; max-height: 550px; overflow: auto; padding: 0 10px 5px 10px;
+		.item{ border: 0px solid blue; width: 300px; margin: 13px 0 0 0; padding: 3px 10px 8px 10px; background: url(/img/[staff]/yellow-paper.jpg); box-shadow: 1px 3px 4px rgba(0,0,0, .5) ;
+			.id{font-size: 8px; color: #333; font-weight: normal; padding: 0 7px 0 0 ; }
+			.date{font-size: 10px; color: #333; font-weight: normal;}
+			.client{font-size: 11px; margin: 1px 0 4px 0; }
+			.comment{font-weight: normal; font-size: 14px;  }
+			.btns-wrapper{margin: 7px 0 0 0;
+				.btn{ font-size: 11px; font-weight: normal; text-decoration: none; color: #000; border: 1px solid #000; padding: 0px 3px; border-radius: 3px; }
+				.postponeBtns{font-size: 11px;
+					a{display: inline-block; margin: 0 6px 0 6px; }
+				}
+			}
+		}
+	}
+	.btns{text-align: right; }
+}
+
+
 
 .menu{
 	background: @menuBgColor;
@@ -1028,7 +1050,7 @@ input, select, textarea, button{
 	}
 }
 .filter-vals{margin: 0 0 15px 20px; font-size: 10px;}
-	
+
 
 
 

@@ -20,6 +20,7 @@
 	<script src="/<?=ADMIN_DIR?>/js/slonne.js" type="text/javascript"></script>
 	<script src="/<?=ADMIN_DIR?>/js/slonne.entities.js" type="text/javascript"></script>
 	<script src="/<?=ADMIN_DIR?>/js/slonne.reminder.js" type="text/javascript"></script>
+	<script src="/<?=ADMIN_DIR?>/js/slonne.notifier.js" type="text/javascript"></script>
     <script src="/<?=ADMIN_DIR?>/js/slonne.fields.js" type="text/javascript"></script>
 
 	<!--
@@ -154,6 +155,17 @@ if(Admin::isAdmin())
 
 					<div class="content" style=" border: 0px solid red; padding: 0; margin: 10px;  " >
 						<?=$CONTENT->content?>
+
+
+                        <div class="notifier" >
+
+                            <div class="inner"></div>
+                            <div class="btns">
+                                <button type="button" onclick="Notifier.list(); ">обновить</button>
+                                <button type="button" onclick="$('.notifier ').fadeOut(); ">закрыть</button>
+                            </div>
+                        </div>
+
 					</div>
 				</div>	
 			</div>
@@ -174,7 +186,10 @@ if(Admin::isAdmin())
 					<!--//Футер-->
 				</div>	
 			</div>
-			
+
+
+
+
 			
 		</div>
 		
@@ -182,4 +197,9 @@ if(Admin::isAdmin())
 	</div>
 </body>
 
-</html> 
+</html>
+
+
+<?if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) ):?>
+<script>Notifier.list()</script>
+<?endif;?>

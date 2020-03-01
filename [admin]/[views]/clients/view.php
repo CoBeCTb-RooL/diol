@@ -85,7 +85,7 @@ $item = $MODEL['item'];
             <div class="field-wrapper">
                 <span class="label" >Дата<span class="required">*</span>: </span>
                 <span class="value" >
-                    <input type="text" id="date" name="date" value="" style="width: 100px; " />
+                    <input type="text" id="date" name="date" value="" style="width: 73px; " />
                     <img id="date-calendar-btn" src="/js/calendar/calendar.jpg" style="border:0px;">
                     <script>
                                 Calendar.setup({
@@ -110,6 +110,10 @@ $item = $MODEL['item'];
                     <!--                        --><?//
                     //                    }?>
     <!--                </select>-->
+
+                    <?foreach ($MODEL['datePeriods'] as $str=>$val):?>
+                        <a href="#" onclick="$('#date').val('<?=$val?>')" style="font-weight: normal; font-size: .9em; "><?=$str?></a>&nbsp;
+                    <?endforeach;?>
                 </span>
                 <div class="clear"></div>
             </div>

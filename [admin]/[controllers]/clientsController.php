@@ -236,7 +236,7 @@ class ClientsController extends MainController{
             if($MODEL['item'])
             {
                 $MODEL['item']->initMedia();
-//                $MODEL['item']->initReminders();
+                $MODEL['datePeriods'] = Reminder::datePeriods() ;
             }
             else
                 $MODEL['error'] = 'Клиент не найден. ['.$_REQUEST['id'].']';
@@ -249,102 +249,102 @@ class ClientsController extends MainController{
 	
 	
 	
-	function unitsList()
-	{
-		require(GLOBAL_VARS_SCRIPT_FILE_PATH);
-		Startup::execute(Startup::ADMIN);
-		$CORE->setLayout(null);
+//	function unitsList()
+//	{
+//		require(GLOBAL_VARS_SCRIPT_FILE_PATH);
+//		Startup::execute(Startup::ADMIN);
+//		$CORE->setLayout(null);
+//
+//		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
+//		{
+//			$MODEL['cat'] = Client::get($_REQUEST['id']);
+//			$MODEL['cat']->initProductVolumeUnits();
+//			$MODEL['units'] = ProductVolumeUnit::getList();
+//		}
+//		else
+//			$MODEL['error'] = Error::NO_ACCESS_ERROR;
+//
+//		Core::renderView('clients/unitsList.php', $MODEL);
+//	}
+//
 	
-		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
-		{
-			$MODEL['cat'] = Client::get($_REQUEST['id']);
-			$MODEL['cat']->initProductVolumeUnits();
-			$MODEL['units'] = ProductVolumeUnit::getList();
-		}
-		else
-			$MODEL['error'] = Error::NO_ACCESS_ERROR;
 	
-		Core::renderView('clients/unitsList.php', $MODEL);
-	}
-	
-	
-	
-	function unitClick()
-	{
-		require(GLOBAL_VARS_SCRIPT_FILE_PATH);
-		Startup::execute(Startup::ADMIN);
-		$CORE->setLayout(null);
-		
-		$errors = null;
-		
-		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
-		{
-			$cat = Client::get($_REQUEST['clientId']);
-			if($cat)
-			{
-				$unit = ProductVolumeUnit::get($_REQUEST['unitId']);
-				if($unit)
-				{
-					$checked = $_REQUEST['checked'] ? true : false;
-					$catUnitCmb = CatProductVolumeUnitCmb::get($cat->id, $unit->id);
-					if($checked)
-					{
-						if(!$catUnitCmb)
-						{
-							$catUnitCmb = new CatProductVolumeUnitCmb();
-							$catUnitCmb->clientId = $cat->id;
-							$catUnitCmb->unitId = $unit->id;
-							$catUnitCmb->insert();
-							
-							$jeType = JournalEntryType::code(JournalEntryType::CATEGORY_CREATE_PRODUCT_UNIT_CMB);
-							$msg = 'Добавлена единица изм. "'.$unit->name.'"(id:'.$unit->id.')';
-							
-							$toJournal = true;
-						}
-					}
-					else
-					{
-						if($catUnitCmb) 
-						{
-							$catUnitCmb->delete();
-							$jeType = JournalEntryType::code(JournalEntryType::CATEGORY_DELETE_PRODUCT_UNIT_CMB);
-							$msg = 'Удалена единица изм. "'.$unit->name.'"(id:'.$unit->id.')';
-							
-							$toJournal = true;
-						}
-					}
-					
-					if($toJournal )
-					{
-						//vd($jeType);
-						# 	записываем в журнал событий
-						$je = new JournalEntry();
-						$je->objectType = Object::code(Object::CATEGORY);
-						$je->objectId = $cat->id;
-						$je->journalEntryType = $jeType;
-						$je->comment = $msg;
-						$je->param1 = $unit->id;
-						$je->adminId = $ADMIN->id;
-						$je->insert();
-					}
-				}
-				else
-					$errors[] = new Error('ОШИБКА! Мера не найдена.');
-			}
-			else 
-				$errors[] = new Error('ОШИБКА! Категория не найдена.');
-			
-			$cat->initProductVolumeUnits();
-		}
-		else 
-			$errors[] = new Error(Error::NO_ACCESS_ERROR);
-		
-		$json['cat'] = $cat;
-		$json['errors'] = $errors;
-		$json['checked'] = $checked;
-		
-		echo json_encode($json);
-	}
+//	function unitClick()
+//	{
+//		require(GLOBAL_VARS_SCRIPT_FILE_PATH);
+//		Startup::execute(Startup::ADMIN);
+//		$CORE->setLayout(null);
+//
+//		$errors = null;
+//
+//		if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
+//		{
+//			$cat = Client::get($_REQUEST['clientId']);
+//			if($cat)
+//			{
+//				$unit = ProductVolumeUnit::get($_REQUEST['unitId']);
+//				if($unit)
+//				{
+//					$checked = $_REQUEST['checked'] ? true : false;
+//					$catUnitCmb = CatProductVolumeUnitCmb::get($cat->id, $unit->id);
+//					if($checked)
+//					{
+//						if(!$catUnitCmb)
+//						{
+//							$catUnitCmb = new CatProductVolumeUnitCmb();
+//							$catUnitCmb->clientId = $cat->id;
+//							$catUnitCmb->unitId = $unit->id;
+//							$catUnitCmb->insert();
+//
+//							$jeType = JournalEntryType::code(JournalEntryType::CATEGORY_CREATE_PRODUCT_UNIT_CMB);
+//							$msg = 'Добавлена единица изм. "'.$unit->name.'"(id:'.$unit->id.')';
+//
+//							$toJournal = true;
+//						}
+//					}
+//					else
+//					{
+//						if($catUnitCmb)
+//						{
+//							$catUnitCmb->delete();
+//							$jeType = JournalEntryType::code(JournalEntryType::CATEGORY_DELETE_PRODUCT_UNIT_CMB);
+//							$msg = 'Удалена единица изм. "'.$unit->name.'"(id:'.$unit->id.')';
+//
+//							$toJournal = true;
+//						}
+//					}
+//
+//					if($toJournal )
+//					{
+//						//vd($jeType);
+//						# 	записываем в журнал событий
+//						$je = new JournalEntry();
+//						$je->objectType = Object::code(Object::CATEGORY);
+//						$je->objectId = $cat->id;
+//						$je->journalEntryType = $jeType;
+//						$je->comment = $msg;
+//						$je->param1 = $unit->id;
+//						$je->adminId = $ADMIN->id;
+//						$je->insert();
+//					}
+//				}
+//				else
+//					$errors[] = new Error('ОШИБКА! Мера не найдена.');
+//			}
+//			else
+//				$errors[] = new Error('ОШИБКА! Категория не найдена.');
+//
+//			$cat->initProductVolumeUnits();
+//		}
+//		else
+//			$errors[] = new Error(Error::NO_ACCESS_ERROR);
+//
+//		$json['cat'] = $cat;
+//		$json['errors'] = $errors;
+//		$json['checked'] = $checked;
+//
+//		echo json_encode($json);
+//	}
 
 
 
@@ -392,6 +392,8 @@ class ClientsController extends MainController{
         {
             $params = [
                 'orderBy' => 'dt asc',
+//                'dateTo' => date('Y-m-d'),
+                'status' => Status::code(Status::ACTIVE),
             ];
             if($_REQUEST['clientId'])
                 $params['clientId'] = $_REQUEST['clientId'];
@@ -423,7 +425,6 @@ class ClientsController extends MainController{
                 $item = new Reminder();
 
             $item->setData($_REQUEST);
-//            vd($item);
 
             $errors = $item->validate();
             if(!count($errors))
@@ -432,7 +433,7 @@ class ClientsController extends MainController{
                     $item->update();
                 else
                 {
-                    $item->status = Status::code(Status::ACTIVE)->num;
+                    $item->status = Status::code(Status::ACTIVE);
                     $item->id = $item->insert();
                 }
             }
@@ -441,6 +442,71 @@ class ClientsController extends MainController{
             $errors[] = new Error(Error::NO_ACCESS_ERROR);
 
         $json['errors'] = $errors;
+
+        echo json_encode($json);
+    }
+
+
+
+
+
+    function clientsReminderSetDone()
+    {
+        require(GLOBAL_VARS_SCRIPT_FILE_PATH);
+        Startup::execute(Startup::ADMIN);
+        $CORE->setLayout(null);
+
+        $errors = null;
+
+        if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
+        {
+            $item = Reminder::get($_REQUEST['id']);
+            $item->status = Status::code(Status::DONE);
+            $item->update();
+        }
+        else
+            $errors[] = new Error(Error::NO_ACCESS_ERROR);
+
+        $json['errors'] = $errors;
+
+        echo json_encode($json);
+    }
+
+
+
+
+    function clientsReminderPostpone()
+    {
+        require(GLOBAL_VARS_SCRIPT_FILE_PATH);
+        Startup::execute(Startup::ADMIN);
+        $CORE->setLayout(null);
+
+        $error = null;
+
+        if($ADMIN->hasRole(Role::SYSTEM_ADMINISTRATOR) )
+        {
+            $item = Reminder::get($_REQUEST['id']);
+
+            $period = $_REQUEST['period'];
+
+//            vd(date('Y-m-d H:i:s'));
+//            vd($period);
+//            vd(Reminder::datePeriods());
+
+            $newDate = Reminder::datePeriods()[$period];
+            if(!$newDate)
+                $newDate = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s') . ' +2 hour'));
+
+//            vd($newDate);
+//            vd($item);
+            $item->dt = $newDate;
+//            vd($item);
+            $item->update();
+        }
+        else
+            $errors[] = new Error(Error::NO_ACCESS_ERROR);
+
+        $json['error'] = $error;
 
         echo json_encode($json);
     }

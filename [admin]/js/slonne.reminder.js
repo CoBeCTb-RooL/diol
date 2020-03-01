@@ -136,4 +136,8 @@ var Reminder = {
 	msg: function(msg){
 		this.$wrapper().find('.info').html(msg).show()
 	},
+
+
+
+
 }
